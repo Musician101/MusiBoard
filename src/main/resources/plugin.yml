@@ -1,0 +1,16 @@
+name: MusiBoard
+version: '${version}'
+main: io.musician101.musiboard.MusiBoard
+api-version: 1.19
+author: Musician101
+commands:
+  musiboard:
+    aliases: [ mb ]
+  objectives:
+    aliases: [ ]
+  players:
+    aliases: [ ]
+  scoreboard:
+    aliases: [ ]
+  team:
+    aliases: [ ]
