@@ -9,8 +9,8 @@ import io.musician101.bukkitier.command.Command;
 import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import java.util.List;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
@@ -18,13 +18,13 @@ import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 class CreateCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new ArgumentCommand<String>() {
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) {
+            public int execute(@NotNull CommandContext<CommandSender> context) {
                 String name = StringArgumentType.getString(context, name());
                 boolean success = getManager().registerNewScoreboard(name);
                 CommandSender sender = context.getSource();
@@ -38,13 +38,13 @@ class CreateCommand extends MusiBoardCommand implements LiteralCommand {
                 return 1;
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public String name() {
                 return "name";
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public ArgumentType<String> type() {
                 return StringArgumentType.word();
@@ -53,25 +53,25 @@ class CreateCommand extends MusiBoardCommand implements LiteralCommand {
     }
 
     @Override
-    public boolean canUse(@Nonnull CommandSender sender) {
+    public boolean canUse(@NotNull CommandSender sender) {
         return canEdit(sender);
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String description(@Nonnull CommandSender sender) {
+    public String description(@NotNull CommandSender sender) {
         return "Create a new scoreboard";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "create";
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String usage(@Nonnull CommandSender sender) {
+    public String usage(@NotNull CommandSender sender) {
         return "/sb create <name>";
     }
 }

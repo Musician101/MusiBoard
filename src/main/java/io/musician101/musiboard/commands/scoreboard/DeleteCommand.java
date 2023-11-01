@@ -8,22 +8,22 @@ import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.MusiScoreboardArgument;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import java.util.List;
-import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 class DeleteCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new MusiScoreboardArgument() {
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) {
+            public int execute(@NotNull CommandContext<CommandSender> context) {
                 MusiScoreboard scoreboard = getScoreboard(context);
                 Bukkit.getOnlinePlayers().stream().filter(scoreboard::hasPlayer).forEach(player -> getManager().setScoreboard(player, getManager().getDefaultScoreboardOrVanilla()));
                 getManager().getScoreboards().remove(scoreboard);
@@ -34,25 +34,25 @@ class DeleteCommand extends MusiBoardCommand implements LiteralCommand {
     }
 
     @Override
-    public boolean canUse(@Nonnull CommandSender sender) {
+    public boolean canUse(@NotNull CommandSender sender) {
         return canEdit(sender);
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String description(@Nonnull CommandSender sender) {
+    public String description(@NotNull CommandSender sender) {
         return "Delete a scoreboard.";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "delete";
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String usage(@Nonnull CommandSender sender) {
+    public String usage(@NotNull CommandSender sender) {
         return "/sb delete <name>";
     }
 }

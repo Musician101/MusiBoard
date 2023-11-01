@@ -12,44 +12,44 @@ import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.commands.arguments.EnumArgumentType;
 import io.musician101.musiboard.commands.arguments.Operation;
 import java.util.List;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 public class OperationCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new TargetArgument() {
 
-            @Nonnull
+            @NotNull
             @Override
             public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
                 return List.of(new TargetArgument() {
 
-                    @Nonnull
+                    @NotNull
                     @Override
                     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
                         return List.of(new ArgumentCommand<Operation>() {
 
-                            @Nonnull
+                            @NotNull
                             @Override
                             public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
                                 return List.of(new TargetArgument() {
 
-                                    @Nonnull
+                                    @NotNull
                                     @Override
                                     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
                                         return List.of(new ObjectiveArgument() {
 
                                             @Override
-                                            public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+                                            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                                                 Objective targetObjective = getObjective(context, "targetObjective");
                                                 Objective sourceObjective = getObjective(context, "sourceObjective");
                                                 List<Entity> targets = getTargets(context, "targets");
@@ -68,7 +68,7 @@ public class OperationCommand extends MusiBoardCommand implements LiteralCommand
                                                 return 1;
                                             }
 
-                                            @Nonnull
+                                            @NotNull
                                             @Override
                                             public String name() {
                                                 return "sourceObjective";
@@ -76,7 +76,7 @@ public class OperationCommand extends MusiBoardCommand implements LiteralCommand
                                         });
                                     }
 
-                                    @Nonnull
+                                    @NotNull
                                     @Override
                                     public String name() {
                                         return "sources";
@@ -84,13 +84,13 @@ public class OperationCommand extends MusiBoardCommand implements LiteralCommand
                                 });
                             }
 
-                            @Nonnull
+                            @NotNull
                             @Override
                             public String name() {
                                 return "operation";
                             }
 
-                            @Nonnull
+                            @NotNull
                             @Override
                             public ArgumentType<Operation> type() {
                                 return new EnumArgumentType<>(Operation::operator, Operation.values());
@@ -98,7 +98,7 @@ public class OperationCommand extends MusiBoardCommand implements LiteralCommand
                         });
                     }
 
-                    @Nonnull
+                    @NotNull
                     @Override
                     public String name() {
                         return "targetObjective";
@@ -108,21 +108,21 @@ public class OperationCommand extends MusiBoardCommand implements LiteralCommand
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String description(@Nonnull CommandSender sender) {
+    public String description(@NotNull CommandSender sender) {
         return "Applies an arithmetic operation altering the targets' scores in the objective.";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "operation";
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String usage(@Nonnull CommandSender sender) {
+    public String usage(@NotNull CommandSender sender) {
         return "/scoreboard players operation <targets> <targetObjective> <operation> <source> <sourceObjective>";
     }
 }

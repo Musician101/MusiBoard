@@ -8,22 +8,22 @@ import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import java.util.List;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scoreboard.Objective;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 class RemoveCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new ObjectiveArgument() {
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                 Objective objective = getObjective(context);
                 objective.unregister();
                 sendMessage(context, text("Objective removed.", GREEN));
@@ -32,21 +32,21 @@ class RemoveCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String description(@Nonnull CommandSender sender) {
+    public String description(@NotNull CommandSender sender) {
         return "Remove an objective.";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "remove";
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String usage(@Nonnull CommandSender sender) {
+    public String usage(@NotNull CommandSender sender) {
         return "/objectives remove <objective>";
     }
 }

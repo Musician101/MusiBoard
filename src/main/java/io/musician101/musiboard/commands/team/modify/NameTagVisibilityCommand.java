@@ -9,30 +9,30 @@ import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.arguments.EnumArgumentType;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import java.util.List;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 
 public class NameTagVisibilityCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new OptionStatusArgument() {
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                 Team team = TeamArgumentType.get(context);
                 team.setOption(Option.NAME_TAG_VISIBILITY, EnumArgumentType.get(context, name(), OptionStatus.class));
                 sendMessage(context, text("Name tag visibility updated successfully."));
                 return 1;
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public String name() {
                 return "nameTagVisibility";
@@ -40,7 +40,7 @@ public class NameTagVisibilityCommand extends MusiBoardCommand implements Litera
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "nameTagVisibility";

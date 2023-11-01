@@ -11,30 +11,30 @@ import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.commands.arguments.EnumArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 class SetDisplayCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new ArgumentCommand<DisplaySlot>() {
 
-            @Nonnull
+            @NotNull
             @Override
             public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
                 return List.of(new ObjectiveArgument() {
 
                     @Override
-                    public int execute(@Nonnull CommandContext<CommandSender> context) {
+                    public int execute(@NotNull CommandContext<CommandSender> context) {
                         Player player = getPlayer(context);
                         setDisplaySlot(player, context.getArgument("displaySlot", DisplaySlot.class), getScoreboard(player).getObjective(context.getArgument(name(), String.class)));
                         return 1;
@@ -43,18 +43,18 @@ class SetDisplayCommand extends MusiBoardCommand implements LiteralCommand {
             }
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) {
+            public int execute(@NotNull CommandContext<CommandSender> context) {
                 setDisplaySlot((Player) context.getSource(), EnumArgumentType.get(context, name(), DisplaySlot.class), null);
                 return 1;
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public String name() {
                 return "slot";
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public ArgumentType<DisplaySlot> type() {
                 return new EnumArgumentType<>(DisplaySlot::getId, DisplaySlot.values());
@@ -62,19 +62,19 @@ class SetDisplayCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String description(@Nonnull CommandSender sender) {
+    public String description(@NotNull CommandSender sender) {
         return "Set the display slot of an objective.";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "setDisplay";
     }
 
-    private void setDisplaySlot(@Nonnull Player player, @Nonnull DisplaySlot slot, @Nullable Objective objective) {
+    private void setDisplaySlot(@NotNull Player player, @NotNull DisplaySlot slot, @Nullable Objective objective) {
         MusiScoreboard scoreboard = getScoreboard(player);
         if (objective == null) {
             scoreboard.clearSlot(slot);
@@ -86,9 +86,9 @@ class SetDisplayCommand extends MusiBoardCommand implements LiteralCommand {
         sendMessage(player, text("Display slot set.", GREEN));
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String usage(@Nonnull CommandSender sender) {
+    public String usage(@NotNull CommandSender sender) {
         return "/objectives setDisplay <slot> [<objective>]";
     }
 }

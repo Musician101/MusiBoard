@@ -13,42 +13,42 @@ import io.musician101.musiboard.commands.DisplayNameArgument;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import java.util.List;
-import javax.annotation.Nonnull;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 public class AddCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new ArgumentCommand<String>() {
 
-            @Nonnull
+            @NotNull
             @Override
             public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
                 return List.of(new DisplayNameArgument() {
 
                     @Override
-                    public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+                    public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                         createTeam(getPlayer(context), StringArgumentType.getString(context, name()), context.getArgument(name(), Component.class));
                         return 1;
                     }
                 });
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public String name() {
                 return "team";
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public ArgumentType<String> type() {
                 return StringArgumentType.word();
@@ -68,28 +68,28 @@ public class AddCommand extends MusiBoardCommand implements LiteralCommand {
         sendMessage(player, text("Team created successfully.", GREEN));
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String description(@Nonnull CommandSender sender) {
+    public String description(@NotNull CommandSender sender) {
         return "Create a new team.";
     }
 
     @Override
-    public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+    public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
         String name = StringArgumentType.getString(context, name());
         createTeam(getPlayer(context), name, text(name));
         return 1;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "add";
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String usage(@Nonnull CommandSender sender) {
+    public String usage(@NotNull CommandSender sender) {
         return "/team add <team> [<displayName>]";
     }
 }

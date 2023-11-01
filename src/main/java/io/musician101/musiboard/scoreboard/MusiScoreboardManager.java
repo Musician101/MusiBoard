@@ -9,9 +9,9 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import static io.musician101.musiboard.MusiBoard.getPlugin;
 
@@ -20,18 +20,18 @@ public class MusiScoreboardManager {
     private final List<MusiScoreboard> scoreboards = new ArrayList<>();
     private VanillaScoreboard vanillaScoreboard;
 
-    @Nonnull
+    @NotNull
     public Optional<MusiScoreboard> getDefaultScoreboard() {
         return getScoreboard(getPlugin().getConfig().getString("defaultScoreboard", "minecraft"));
     }
 
-    @Nonnull
+    @NotNull
     public MusiScoreboard getDefaultScoreboardOrVanilla() {
         return getDefaultScoreboard().orElse(vanillaScoreboard);
     }
 
-    @Nonnull
-    public MusiScoreboard getScoreboard(@Nonnull Player player) {
+    @NotNull
+    public MusiScoreboard getScoreboard(@NotNull Player player) {
         if (vanillaScoreboard.hasPlayer(player)) {
             return vanillaScoreboard;
         }
@@ -42,8 +42,8 @@ public class MusiScoreboardManager {
         });
     }
 
-    @Nonnull
-    public Optional<MusiScoreboard> getScoreboard(@Nonnull String name) {
+    @NotNull
+    public Optional<MusiScoreboard> getScoreboard(@NotNull String name) {
         if (name.equals(vanillaScoreboard.getName())) {
             return Optional.of(vanillaScoreboard);
         }
@@ -51,27 +51,27 @@ public class MusiScoreboardManager {
         return scoreboards.stream().filter(m -> name.equals(m.getName())).findFirst();
     }
 
-    @Nonnull
-    public Optional<MusiScoreboard> getScoreboardOrDefault(@Nonnull String name) {
+    @NotNull
+    public Optional<MusiScoreboard> getScoreboardOrDefault(@NotNull String name) {
         return getScoreboard(name).or(this::getDefaultScoreboard);
     }
 
-    @Nonnull
-    public MusiScoreboard getScoreboardOrDefaultOrVanilla(@Nonnull String name) {
+    @NotNull
+    public MusiScoreboard getScoreboardOrDefaultOrVanilla(@NotNull String name) {
         return getScoreboardOrDefault(name).orElse(vanillaScoreboard);
     }
 
-    @Nonnull
-    public MusiScoreboard getScoreboardOrVanilla(@Nonnull String name) {
+    @NotNull
+    public MusiScoreboard getScoreboardOrVanilla(@NotNull String name) {
         return getScoreboard(name).orElse(vanillaScoreboard);
     }
 
-    @Nonnull
+    @NotNull
     public List<MusiScoreboard> getScoreboards() {
         return scoreboards;
     }
 
-    @Nonnull
+    @NotNull
     public VanillaScoreboard getVanillaScoreboard() {
         return vanillaScoreboard;
     }
@@ -89,7 +89,7 @@ public class MusiScoreboardManager {
         logger.info(scoreboards.size() + " scoreboard(s) loaded.");
     }
 
-    public boolean registerNewScoreboard(@Nonnull String name) {
+    public boolean registerNewScoreboard(@NotNull String name) {
         if (name.equals(vanillaScoreboard.getName())) {
             return false;
         }
@@ -108,7 +108,7 @@ public class MusiScoreboardManager {
         getPlugin().getLogger().info(scoreboards.size() + " scoreboard(s) saved.");
     }
 
-    public void setScoreboard(@Nonnull Player player, @Nonnull MusiScoreboard scoreboard) {
+    public void setScoreboard(@NotNull Player player, @NotNull MusiScoreboard scoreboard) {
         scoreboards.forEach(s -> s.removePlayer(player));
         scoreboard.addPlayer(player);
     }

@@ -11,31 +11,31 @@ import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import java.util.List;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 
 public class SeeFriendlyInvisiblesCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new ArgumentCommand<Boolean>() {
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                 Team team = TeamArgumentType.get(context);
                 team.setCanSeeFriendlyInvisibles(BoolArgumentType.getBool(context, name()));
                 return 1;
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public String name() {
                 return "seeFriendlyInvisibles";
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public ArgumentType<Boolean> type() {
                 return BoolArgumentType.bool();
@@ -43,7 +43,7 @@ public class SeeFriendlyInvisiblesCommand extends MusiBoardCommand implements Li
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "seeFriendlyInvisibles";

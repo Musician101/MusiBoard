@@ -11,36 +11,36 @@ import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import io.musician101.musiboard.commands.arguments.TextColorArgumentType;
 import java.util.List;
-import javax.annotation.Nonnull;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 public class ColorCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new ArgumentCommand<NamedTextColor>() {
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                 Team team = TeamArgumentType.get(context);
                 team.color(TextColorArgumentType.getColor(context));
                 sendMessage(context, text("Team color updated.", GREEN));
                 return 1;
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public String name() {
                 return "color";
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public ArgumentType<NamedTextColor> type() {
                 return new TextColorArgumentType();
@@ -48,7 +48,7 @@ public class ColorCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "color";

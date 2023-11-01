@@ -4,18 +4,18 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import io.musician101.bukkitier.command.ArgumentCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.arguments.EnumArgumentType;
-import javax.annotation.Nonnull;
 import org.bukkit.scoreboard.Team.OptionStatus;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class OptionStatusArgument extends MusiBoardCommand implements ArgumentCommand<OptionStatus> {
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "status";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ArgumentType<OptionStatus> type() {
         return new EnumArgumentType<>(o -> o.toString().toLowerCase(), OptionStatus.values());

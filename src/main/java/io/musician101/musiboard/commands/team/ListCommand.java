@@ -10,12 +10,12 @@ import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Nonnull;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.join;
 import static net.kyori.adventure.text.Component.text;
@@ -24,13 +24,13 @@ import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 public class ListCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new TeamArgument() {
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                 Team team = TeamArgumentType.get(context);
                 Player player = getPlayer(context);
                 Set<String> entries = team.getEntries();
@@ -42,14 +42,14 @@ public class ListCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String description(@Nonnull CommandSender sender) {
+    public String description(@NotNull CommandSender sender) {
         return "List all of the teams or the players in a specified team.";
     }
 
     @Override
-    public int execute(@Nonnull CommandContext<CommandSender> context) {
+    public int execute(@NotNull CommandContext<CommandSender> context) {
         Player player = getPlayer(context);
         MusiScoreboard scoreboard = getScoreboard(player);
         Set<Team> teams = scoreboard.getTeams();
@@ -59,15 +59,15 @@ public class ListCommand extends MusiBoardCommand implements LiteralCommand {
         return 1;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "list";
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String usage(@Nonnull CommandSender sender) {
+    public String usage(@NotNull CommandSender sender) {
         return "/team list [<team>]";
     }
 }

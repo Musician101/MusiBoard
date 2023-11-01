@@ -8,14 +8,14 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType.ObjectiveValue;
 import java.util.concurrent.CompletableFuture;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
+import org.jetbrains.annotations.NotNull;
 
 public class ObjectiveArgumentType extends MusiBoardArgumentType<ObjectiveValue> {
 
-    public static Objective get(@Nonnull CommandContext<CommandSender> context, @Nonnull String name) throws CommandSyntaxException {
+    public static Objective get(@NotNull CommandContext<CommandSender> context, @NotNull String name) throws CommandSyntaxException {
         return context.getArgument(name, ObjectiveValue.class).get(context);
     }
 
@@ -43,7 +43,7 @@ public class ObjectiveArgumentType extends MusiBoardArgumentType<ObjectiveValue>
 
     public interface ObjectiveValue {
 
-        @Nonnull
-        Objective get(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException;
+        @NotNull
+        Objective get(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException;
     }
 }

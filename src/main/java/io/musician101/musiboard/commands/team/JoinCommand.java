@@ -9,29 +9,29 @@ import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import io.musician101.musiboard.commands.players.TargetArgument;
 import java.util.List;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 public class JoinCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new TeamArgument() {
 
-            @Nonnull
+            @NotNull
             @Override
             public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
                 return List.of(new TargetArgument() {
 
                     @Override
-                    public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+                    public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                         Team team = TeamArgumentType.get(context);
                         List<Entity> targets = getTargets(context, name());
                         team.addEntities(targets);
@@ -39,7 +39,7 @@ public class JoinCommand extends MusiBoardCommand implements LiteralCommand {
                         return 1;
                     }
 
-                    @Nonnull
+                    @NotNull
                     @Override
                     public String name() {
                         return "members";
@@ -48,7 +48,7 @@ public class JoinCommand extends MusiBoardCommand implements LiteralCommand {
             }
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                 Team team = TeamArgumentType.get(context);
                 Player player = getPlayer(context);
                 team.addEntity(player);
@@ -58,21 +58,21 @@ public class JoinCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String description(@Nonnull CommandSender sender) {
+    public String description(@NotNull CommandSender sender) {
         return "Join a team or add members to a team.";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "join";
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String usage(@Nonnull CommandSender sender) {
+    public String usage(@NotNull CommandSender sender) {
         return "/team join <team> [<members>]";
     }
 }

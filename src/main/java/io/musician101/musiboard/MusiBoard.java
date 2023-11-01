@@ -6,26 +6,26 @@ import io.musician101.musiboard.commands.players.PlayersCommand;
 import io.musician101.musiboard.commands.scoreboard.ScoreboardCommand;
 import io.musician101.musiboard.commands.team.TeamCommand;
 import io.musician101.musiboard.scoreboard.MusiScoreboardManager;
-import javax.annotation.Nonnull;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import static io.musician101.bukkitier.Bukkitier.registerCommand;
 
 public final class MusiBoard extends JavaPlugin implements Listener {
 
-    @Nonnull
+    @NotNull
     private final MusiScoreboardManager manager = new MusiScoreboardManager();
 
-    @Nonnull
+    @NotNull
     public static MusiBoard getPlugin() {
         return getPlugin(MusiBoard.class);
     }
 
-    @Nonnull
+    @NotNull
     public MusiScoreboardManager getManager() {
         return manager;
     }

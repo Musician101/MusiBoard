@@ -7,36 +7,36 @@ import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.arguments.EntitiesArgumentType;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class TargetArgument extends MusiBoardCommand implements ArgumentCommand<String> {
 
-    public Optional<Entity> getTarget(@Nonnull CommandContext<CommandSender> context) {
+    public Optional<Entity> getTarget(@NotNull CommandContext<CommandSender> context) {
         return getTarget(context, name());
     }
 
-    public Optional<Entity> getTarget(@Nonnull CommandContext<CommandSender> context, @Nonnull String name) {
+    public Optional<Entity> getTarget(@NotNull CommandContext<CommandSender> context, @NotNull String name) {
         return Optional.of(getTargets(context, name)).filter(l -> !l.isEmpty()).map(l -> l.iterator().next());
     }
 
-    public List<Entity> getTargets(@Nonnull CommandContext<CommandSender> context) {
+    public List<Entity> getTargets(@NotNull CommandContext<CommandSender> context) {
         return getTargets(context, name());
     }
 
-    public List<Entity> getTargets(@Nonnull CommandContext<CommandSender> context, @Nonnull String name) {
+    public List<Entity> getTargets(@NotNull CommandContext<CommandSender> context, @NotNull String name) {
         return Bukkit.selectEntities(context.getSource(), context.getArgument(name, String.class));
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "targets";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ArgumentType<String> type() {
         return new EntitiesArgumentType();

@@ -8,13 +8,13 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import java.util.concurrent.CompletableFuture;
-import javax.annotation.Nonnull;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class TextColorArgumentType implements ArgumentType<NamedTextColor> {
 
-    public static NamedTextColor getColor(@Nonnull CommandContext<CommandSender> context) {
+    public static NamedTextColor getColor(@NotNull CommandContext<CommandSender> context) {
         return context.getArgument("color", NamedTextColor.class);
     }
 

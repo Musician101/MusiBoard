@@ -5,17 +5,17 @@ import io.musician101.bukkitier.command.ArgumentCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType.TeamValue;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class TeamArgument extends MusiBoardCommand implements ArgumentCommand<TeamValue> {
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "team";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ArgumentType<TeamValue> type() {
         return new TeamArgumentType();

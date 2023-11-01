@@ -9,14 +9,14 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType.TeamValue;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import java.util.concurrent.CompletableFuture;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 
 public class TeamArgumentType extends MusiBoardArgumentType<TeamValue> {
 
-    public static Team get(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+    public static Team get(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
         return context.getArgument("team", TeamValue.class).getTeam(context);
     }
 
@@ -37,15 +37,15 @@ public class TeamArgumentType extends MusiBoardArgumentType<TeamValue> {
 
     public class TeamValue {
 
-        @Nonnull
+        @NotNull
         private final String teamName;
 
-        TeamValue(@Nonnull String teamName) {
+        TeamValue(@NotNull String teamName) {
             this.teamName = teamName;
         }
 
-        @Nonnull
-        private Team getTeam(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+        @NotNull
+        private Team getTeam(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
             if (context.getSource() instanceof Player player) {
                 Team team = getScoreboard(player).getTeam(teamName);
                 if (team == null) {

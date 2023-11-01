@@ -11,33 +11,33 @@ import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import java.util.List;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.scoreboard.Objective;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 public class SetCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new TargetArgument() {
 
-            @Nonnull
+            @NotNull
             @Override
             public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
                 return List.of(new ObjectiveArgument() {
 
-                    @Nonnull
+                    @NotNull
                     @Override
                     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
                         return List.of(new ArgumentCommand<Integer>() {
 
                             @Override
-                            public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+                            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                                 Objective objective = getObjective(context);
                                 int s = IntegerArgumentType.getInteger(context, name());
                                 List<Entity> entities = getTargets(context);
@@ -47,13 +47,13 @@ public class SetCommand extends MusiBoardCommand implements LiteralCommand {
                                 return 1;
                             }
 
-                            @Nonnull
+                            @NotNull
                             @Override
                             public String name() {
                                 return "set";
                             }
 
-                            @Nonnull
+                            @NotNull
                             @Override
                             public ArgumentType<Integer> type() {
                                 return IntegerArgumentType.integer();
@@ -65,21 +65,21 @@ public class SetCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String description(@Nonnull CommandSender sender) {
+    public String description(@NotNull CommandSender sender) {
         return "Set the targets' score for an objective.";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "set";
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String usage(@Nonnull CommandSender sender) {
+    public String usage(@NotNull CommandSender sender) {
         return LiteralCommand.super.usage(sender);
     }
 }

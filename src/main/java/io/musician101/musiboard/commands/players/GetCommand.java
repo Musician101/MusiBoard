@@ -9,11 +9,11 @@ import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
@@ -21,18 +21,18 @@ import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 public class GetCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new TargetArgument() {
 
-            @Nonnull
+            @NotNull
             @Override
             public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
                 return List.of(new ObjectiveArgument() {
 
                     @Override
-                    public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+                    public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                         Optional<Entity> optional = getTarget(context);
                         Objective objective = getObjective(context);
                         Player player = getPlayer(context);
@@ -51,21 +51,21 @@ public class GetCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String description(@Nonnull CommandSender sender) {
+    public String description(@NotNull CommandSender sender) {
         return "Get the score of a target from an objective.";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "get";
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String usage(@Nonnull CommandSender sender) {
+    public String usage(@NotNull CommandSender sender) {
         return "/players get <target> <objective>";
     }
 }

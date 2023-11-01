@@ -6,20 +6,20 @@ import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.objectives.modify.ModifyCommand;
 import java.util.List;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class ObjectivesCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new AddCommand(), new ListCommand(), new ModifyCommand(), new RemoveCommand(), new SetDisplayCommand(), new ToggleSaveCommand());
     }
 
     @Override
-    public boolean canUse(@Nonnull CommandSender sender) {
+    public boolean canUse(@NotNull CommandSender sender) {
         return canEdit(sender) && sender instanceof Player;
     }
 
@@ -28,7 +28,7 @@ public class ObjectivesCommand extends MusiBoardCommand implements LiteralComman
         return true;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "objectives";

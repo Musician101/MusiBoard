@@ -8,18 +8,18 @@ import io.musician101.bukkitier.command.ArgumentCommand;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType.ObjectiveValue;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class ObjectiveArgument extends MusiBoardCommand implements ArgumentCommand<ObjectiveValue> {
 
-    public Objective getObjective(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+    public Objective getObjective(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
         return getObjective(context, name());
     }
 
-    public Objective getObjective(@Nonnull CommandContext<CommandSender> context, @Nonnull String name) throws CommandSyntaxException {
+    public Objective getObjective(@NotNull CommandContext<CommandSender> context, @NotNull String name) throws CommandSyntaxException {
         MusiScoreboard scoreboard = getScoreboard((Player) context.getSource());
         Objective objective = scoreboard.getObjective(context.getArgument(name, String.class));
         if (objective == null) {
@@ -29,13 +29,13 @@ public abstract class ObjectiveArgument extends MusiBoardCommand implements Argu
         return objective;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "objective";
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ArgumentType<ObjectiveValue> type() {
         return new ObjectiveArgumentType();

@@ -10,24 +10,24 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class EnumArgumentType<E extends Enum<E>> implements ArgumentType<E> {
 
-    @Nonnull
+    @NotNull
     private final Function<E, String> toString;
-    @Nonnull
+    @NotNull
     private final E[] values;
 
     @SafeVarargs
-    public EnumArgumentType(@Nonnull Function<E, String> toString, @Nonnull E... values) {
+    public EnumArgumentType(@NotNull Function<E, String> toString, @NotNull E... values) {
         this.toString = toString;
         this.values = values;
     }
 
-    @Nonnull
-    public static <E> E get(@Nonnull CommandContext<CommandSender> context, @Nonnull String name, @Nonnull Class<E> clazz) {
+    @NotNull
+    public static <E> E get(@NotNull CommandContext<CommandSender> context, @NotNull String name, @NotNull Class<E> clazz) {
         return context.getArgument(name, clazz);
     }
 

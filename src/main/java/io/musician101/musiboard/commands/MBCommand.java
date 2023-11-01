@@ -12,8 +12,8 @@ import io.musician101.musiboard.commands.players.PlayersCommand;
 import io.musician101.musiboard.commands.scoreboard.ScoreboardCommand;
 import io.musician101.musiboard.commands.team.TeamCommand;
 import java.util.List;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.textOfChildren;
@@ -25,19 +25,19 @@ public class MBCommand extends HelpMainCommand {
         super(MusiBoard.getPlugin());
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new LiteralCommand() {
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) {
+            public int execute(@NotNull CommandContext<CommandSender> context) {
                 MusiBoard.getPlugin().reload();
                 context.getSource().sendMessage(textOfChildren(Messages.PREFIX, text("Config reloaded.", GREEN)));
                 return 1;
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public String name() {
                 return "reload";
@@ -51,7 +51,7 @@ public class MBCommand extends HelpMainCommand {
     }
 
     @Override
-    public int execute(@Nonnull CommandContext<CommandSender> context) {
+    public int execute(@NotNull CommandContext<CommandSender> context) {
         super.execute(context);
         CommandSender sender = context.getSource();
         commandInfo(sender, new ObjectivesCommand());
@@ -61,7 +61,7 @@ public class MBCommand extends HelpMainCommand {
         return 1;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "musiboard";

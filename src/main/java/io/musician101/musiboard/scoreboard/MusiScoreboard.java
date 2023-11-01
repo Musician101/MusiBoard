@@ -11,7 +11,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -28,24 +27,25 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
+import org.jetbrains.annotations.NotNull;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.musician101.musiboard.MusiBoard.getPlugin;
 
 public class MusiScoreboard {
 
-    @Nonnull
+    @NotNull
     private final String name;
-    @Nonnull
+    @NotNull
     private final List<String> objectivesNoSave;
     private final List<UUID> players = new ArrayList<>();
-    @Nonnull
+    @NotNull
     private final Scoreboard scoreboard;
-    @Nonnull
+    @NotNull
     private final List<String> teamsNoSave;
     private boolean saveData;
 
-    public MusiScoreboard(@Nonnull ConfigurationSection cs) {
+    public MusiScoreboard(@NotNull ConfigurationSection cs) {
         this.name = checkNotNull(cs.getString("Name"));
         this.saveData = cs.getBoolean("SaveData");
         ConfigurationSection noSave = cs.getConfigurationSection("NoSave");
@@ -90,15 +90,15 @@ public class MusiScoreboard {
         }
     }
 
-    public MusiScoreboard(@Nonnull String name) {
+    public MusiScoreboard(@NotNull String name) {
         this(name, true);
     }
 
-    public MusiScoreboard(@Nonnull String name, boolean saveData) {
+    public MusiScoreboard(@NotNull String name, boolean saveData) {
         this(name, saveData, Bukkit.getScoreboardManager().getNewScoreboard());
     }
 
-    protected MusiScoreboard(@Nonnull String name, boolean saveData, @Nonnull Scoreboard scoreboard) {
+    protected MusiScoreboard(@NotNull String name, boolean saveData, @NotNull Scoreboard scoreboard) {
         this.name = name;
         this.saveData = saveData;
         this.scoreboard = scoreboard;
@@ -106,7 +106,7 @@ public class MusiScoreboard {
         this.teamsNoSave = new ArrayList<>();
     }
 
-    void addPlayer(@Nonnull Player player) {
+    void addPlayer(@NotNull Player player) {
         player.setScoreboard(scoreboard);
         players.add(player.getUniqueId());
     }
@@ -115,45 +115,45 @@ public class MusiScoreboard {
         scoreboard.clearSlot(slot);
     }
 
-    public void disableObjectiveSave(@Nonnull Objective objective) {
+    public void disableObjectiveSave(@NotNull Objective objective) {
         disableObjectiveSave(objective.getName());
     }
 
-    public void disableObjectiveSave(@Nonnull String objective) {
+    public void disableObjectiveSave(@NotNull String objective) {
         objectivesNoSave.add(objective);
     }
 
-    public void disableTeamSave(@Nonnull Team team) {
+    public void disableTeamSave(@NotNull Team team) {
         disableTeamSave(team.getName());
     }
 
-    public void disableTeamSave(@Nonnull String team) {
+    public void disableTeamSave(@NotNull String team) {
         teamsNoSave.add(team);
     }
 
-    public void enableObjectiveSave(@Nonnull Objective objective) {
+    public void enableObjectiveSave(@NotNull Objective objective) {
         enableObjectiveSave(objective.getName());
     }
 
-    public void enableObjectiveSave(@Nonnull String objective) {
+    public void enableObjectiveSave(@NotNull String objective) {
         objectivesNoSave.add(objective);
     }
 
-    public void enableTeamSave(@Nonnull Team team) {
+    public void enableTeamSave(@NotNull Team team) {
         enableTeamSave(team.getName());
     }
 
-    public void enableTeamSave(@Nonnull String team) {
+    public void enableTeamSave(@NotNull String team) {
         teamsNoSave.add(team);
     }
 
-    @Nonnull
+    @NotNull
     public Set<String> getEntries() {
         return scoreboard.getEntries();
     }
 
     @Nullable
-    public Team getEntryTeam(@Nonnull String entry) throws IllegalArgumentException {
+    public Team getEntryTeam(@NotNull String entry) throws IllegalArgumentException {
         return scoreboard.getEntryTeam(entry);
     }
 
@@ -161,91 +161,91 @@ public class MusiScoreboard {
         return cs.getList(key, List.of()).stream().filter(ConfigurationSection.class::isInstance).map(ConfigurationSection.class::cast);
     }
 
-    @Nonnull
+    @NotNull
     public String getName() {
         return name;
     }
 
     @Nullable
-    public Objective getObjective(@Nonnull String name) throws IllegalArgumentException {
+    public Objective getObjective(@NotNull String name) throws IllegalArgumentException {
         return scoreboard.getObjective(name);
     }
 
     @Nullable
-    public Objective getObjective(@Nonnull DisplaySlot slot) throws IllegalArgumentException {
+    public Objective getObjective(@NotNull DisplaySlot slot) throws IllegalArgumentException {
         return scoreboard.getObjective(slot);
     }
 
-    @Nonnull
+    @NotNull
     public Set<Objective> getObjectives() {
         return scoreboard.getObjectives();
     }
 
-    @Nonnull
-    public Set<Objective> getObjectivesByCriteria(@Nonnull Criteria criteria) throws IllegalArgumentException {
+    @NotNull
+    public Set<Objective> getObjectivesByCriteria(@NotNull Criteria criteria) throws IllegalArgumentException {
         return scoreboard.getObjectivesByCriteria(criteria);
     }
 
-    @Nonnull
+    @NotNull
     public List<String> getObjectivesNoSave() {
         return objectivesNoSave;
     }
 
-    @Nonnull
-    public Set<Score> getScores(@Nonnull String entry) throws IllegalArgumentException {
+    @NotNull
+    public Set<Score> getScores(@NotNull String entry) throws IllegalArgumentException {
         return scoreboard.getScores(entry);
     }
 
     @Nullable
-    public Team getTeam(@Nonnull String teamName) throws IllegalArgumentException {
+    public Team getTeam(@NotNull String teamName) throws IllegalArgumentException {
         return scoreboard.getTeam(teamName);
     }
 
-    @Nonnull
+    @NotNull
     public Set<Team> getTeams() {
         return scoreboard.getTeams();
     }
 
-    public boolean hasPlayer(@Nonnull Player player) {
+    public boolean hasPlayer(@NotNull Player player) {
         return players.contains(player.getUniqueId());
     }
 
-    public boolean isObjectiveSaveDisabled(@Nonnull Objective objective) {
+    public boolean isObjectiveSaveDisabled(@NotNull Objective objective) {
         return isObjectiveSaveDisabled(objective.getName());
     }
 
-    public boolean isObjectiveSaveDisabled(@Nonnull String objective) {
+    public boolean isObjectiveSaveDisabled(@NotNull String objective) {
         return objectivesNoSave.contains(objective);
     }
 
-    public boolean isTeamSaveDisabled(@Nonnull Team team) {
+    public boolean isTeamSaveDisabled(@NotNull Team team) {
         return isTeamSaveDisabled(team.getName());
     }
 
-    public boolean isTeamSaveDisabled(@Nonnull String team) {
+    public boolean isTeamSaveDisabled(@NotNull String team) {
         return teamsNoSave.contains(team);
     }
 
-    @Nonnull
-    public Objective registerNewObjective(@Nonnull String name, @Nonnull Criteria criteria, @Nonnull Component displayName) throws IllegalArgumentException {
+    @NotNull
+    public Objective registerNewObjective(@NotNull String name, @NotNull Criteria criteria, @NotNull Component displayName) throws IllegalArgumentException {
         return registerNewObjective(name, criteria, displayName, RenderType.INTEGER);
     }
 
-    @Nonnull
-    public Objective registerNewObjective(@Nonnull String name, @Nonnull Criteria criteria, @Nonnull Component displayName, @Nonnull RenderType renderType) throws IllegalArgumentException {
+    @NotNull
+    public Objective registerNewObjective(@NotNull String name, @NotNull Criteria criteria, @NotNull Component displayName, @NotNull RenderType renderType) throws IllegalArgumentException {
         return scoreboard.registerNewObjective(name, criteria, displayName, renderType);
     }
 
-    @Nonnull
-    public Team registerNewTeam(@Nonnull String name) {
+    @NotNull
+    public Team registerNewTeam(@NotNull String name) {
         return scoreboard.registerNewTeam(name);
     }
 
-    void removePlayer(@Nonnull Player player) {
+    void removePlayer(@NotNull Player player) {
         players.remove(player.getUniqueId());
     }
 
-    public void resetScores(@Nonnull String entry) {
+    public void resetScores(@NotNull String entry) {
         scoreboard.resetScores(entry);
     }
 

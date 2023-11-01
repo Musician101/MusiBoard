@@ -9,23 +9,23 @@ import io.musician101.musiboard.commands.DisplayNameArgument;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import java.util.List;
-import javax.annotation.Nonnull;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scoreboard.Objective;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 public class DisplayNameCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new DisplayNameArgument() {
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                 Objective objective = ObjectiveArgumentType.get(context, "objective");
                 Component displayName = get(context);
                 objective.displayName(displayName);
@@ -35,7 +35,7 @@ public class DisplayNameCommand extends MusiBoardCommand implements LiteralComma
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "displayName";

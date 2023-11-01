@@ -1,7 +1,7 @@
 package io.musician101.musiboard.scoreboard;
 
-import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 public final class VanillaScoreboard extends MusiScoreboard {
 
@@ -10,12 +10,12 @@ public final class VanillaScoreboard extends MusiScoreboard {
     }
 
     @Override
-    public void disableObjectiveSave(@Nonnull String objective) {
+    public void disableObjectiveSave(@NotNull String objective) {
         throw new UnsupportedOperationException("Disabling saving data from the Vanilla scoreboard is not supported.");
     }
 
     @Override
-    public void disableTeamSave(@Nonnull String team) {
+    public void disableTeamSave(@NotNull String team) {
         throw new UnsupportedOperationException("Disabling saving data from the Vanilla scoreboard is not supported.");
     }
 

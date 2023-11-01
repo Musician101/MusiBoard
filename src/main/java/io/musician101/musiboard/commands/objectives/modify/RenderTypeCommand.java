@@ -11,36 +11,36 @@ import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.arguments.EnumArgumentType;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import java.util.List;
-import javax.annotation.Nonnull;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.RenderType;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 public class RenderTypeCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new ArgumentCommand<RenderType>() {
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) throws CommandSyntaxException {
+            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                 Objective objective = ObjectiveArgumentType.get(context, "objective");
                 objective.setRenderType(EnumArgumentType.get(context, name(), RenderType.class));
                 sendMessage(context, text("Render type updated successfully.", GREEN));
                 return 1;
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public String name() {
                 return "renderType";
             }
 
-            @Nonnull
+            @NotNull
             @Override
             public ArgumentType<RenderType> type() {
                 return new EnumArgumentType<>(r -> r.toString().toLowerCase(), RenderType.values());
@@ -48,7 +48,7 @@ public class RenderTypeCommand extends MusiBoardCommand implements LiteralComman
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "renderType";

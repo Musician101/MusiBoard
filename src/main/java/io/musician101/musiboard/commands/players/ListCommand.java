@@ -2,19 +2,18 @@ package io.musician101.musiboard.commands.players;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.musician101.bukkitier.command.Command;
 import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Nonnull;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Score;
+import org.jetbrains.annotations.NotNull;
 
 import static net.kyori.adventure.text.Component.join;
 import static net.kyori.adventure.text.Component.text;
@@ -25,13 +24,13 @@ import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 public class ListCommand extends MusiBoardCommand implements LiteralCommand {
 
-    @Nonnull
+    @NotNull
     @Override
     public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
         return List.of(new TargetArgument() {
 
             @Override
-            public int execute(@Nonnull CommandContext<CommandSender> context) {
+            public int execute(@NotNull CommandContext<CommandSender> context) {
                 Player player = getPlayer(context);
                 MusiScoreboard scoreboard = getScoreboard(player);
                 return getTarget(context).map(entity -> {
@@ -53,14 +52,14 @@ public class ListCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String description(@Nonnull CommandSender sender) {
+    public String description(@NotNull CommandSender sender) {
         return "List tracked entities or the scores of a specific entity on the active scoreboard.";
     }
 
     @Override
-    public int execute(@Nonnull CommandContext<CommandSender> context) {
+    public int execute(@NotNull CommandContext<CommandSender> context) {
         Player player = getPlayer(context);
         Set<String> entries = getScoreboard(player).getEntries();
         if (entries.isEmpty()) {
@@ -75,15 +74,15 @@ public class ListCommand extends MusiBoardCommand implements LiteralCommand {
         return 1;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public String name() {
         return "list";
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public String usage(@Nonnull CommandSender sender) {
+    public String usage(@NotNull CommandSender sender) {
         return "/players list [<target>]";
     }
 }
