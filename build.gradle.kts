@@ -42,7 +42,7 @@ tasks {
         }
 
         archiveClassifier.set("")
-        relocate("io.musician101", "io.musician101.musiboard.lib.io.musician101")
+        relocate("io.musician101.bukkitier", "io.musician101.musiboard.lib.io.musician101")
         dependsOn("build")
     }
 
