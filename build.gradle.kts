@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     compileOnly("org.jetbrains:annotations:24.0.1")
-    compileOnlyApi("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    compileOnlyApi("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
     api("com.github.Musician101:Bukkitier:1.3.3") {
         exclude("org.spigotmc")
     }
@@ -42,7 +42,7 @@ tasks {
         }
 
         archiveClassifier.set("")
-        relocate("io.musician101.bukkitier", "io.musician101.musiboard.lib.io.musician101")
+        relocate("io.musician101.bukkitier", "io.musician101.musiboard.lib.io.musician101.bukkitier")
         dependsOn("build")
     }
 
