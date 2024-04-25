@@ -8,12 +8,13 @@ import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.arguments.EnumArgumentType;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
 

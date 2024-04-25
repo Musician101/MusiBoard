@@ -8,11 +8,12 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType.TeamValue;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
-import java.util.concurrent.CompletableFuture;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.CompletableFuture;
 
 public class TeamArgumentType extends MusiBoardArgumentType<TeamValue> {
 

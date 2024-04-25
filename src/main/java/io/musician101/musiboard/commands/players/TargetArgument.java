@@ -5,12 +5,13 @@ import com.mojang.brigadier.context.CommandContext;
 import io.musician101.bukkitier.command.ArgumentCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.arguments.EntitiesArgumentType;
-import java.util.List;
-import java.util.Optional;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Optional;
 
 public abstract class TargetArgument extends MusiBoardCommand implements ArgumentCommand<String> {
 

@@ -5,11 +5,12 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import org.bukkit.Bukkit;
+import org.bukkit.scoreboard.Criteria;
+
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
-import org.bukkit.Bukkit;
-import org.bukkit.scoreboard.Criteria;
 
 public class CriteriaArgumentType extends MusiBoardArgumentType<Criteria> {
 

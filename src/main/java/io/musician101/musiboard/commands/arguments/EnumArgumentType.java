@@ -7,11 +7,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 public class EnumArgumentType<E extends Enum<E>> implements ArgumentType<E> {
 

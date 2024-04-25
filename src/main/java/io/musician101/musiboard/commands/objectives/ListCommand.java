@@ -3,13 +3,14 @@ package io.musician101.musiboard.commands.objectives;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
-import java.util.Set;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Set;
 
 import static net.kyori.adventure.text.Component.join;
 import static net.kyori.adventure.text.Component.text;

@@ -7,6 +7,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
+
 import java.util.concurrent.CompletableFuture;
 
 public class MusiScoreboardArgumentType extends MusiBoardArgumentType<MusiScoreboard> {

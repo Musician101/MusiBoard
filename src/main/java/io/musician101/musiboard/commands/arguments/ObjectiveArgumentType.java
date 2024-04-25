@@ -7,11 +7,12 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType.ObjectiveValue;
-import java.util.concurrent.CompletableFuture;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.CompletableFuture;
 
 public class ObjectiveArgumentType extends MusiBoardArgumentType<ObjectiveValue> {
 

@@ -11,12 +11,13 @@ import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.commands.arguments.EnumArgumentType;
 import io.musician101.musiboard.commands.arguments.Operation;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
