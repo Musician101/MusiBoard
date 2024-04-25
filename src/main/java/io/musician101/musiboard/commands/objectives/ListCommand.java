@@ -27,7 +27,7 @@ class ListCommand extends MusiBoardCommand implements LiteralCommand {
     public int execute(@NotNull CommandContext<CommandSender> context) {
         Player player = getPlayer(context);
         Set<Objective> objectives = getScoreboard(player).getObjectives();
-        Component joined = textOfChildren(text(objectives.size() == 0 ? "" : ":"), join(JoinConfiguration.commas(true), objectives.stream().map(Objective::displayName).toList()));
+        Component joined = textOfChildren(text(objectives.isEmpty() ? "" : ":"), join(JoinConfiguration.commas(true), objectives.stream().map(Objective::displayName).toList()));
         Component first = text("There are " + objectives.size() + " objective" + (objectives.size() == 1 ? "" : "s"));
         sendMessage(player, first, joined);
         return 1;
