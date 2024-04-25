@@ -1,5 +1,9 @@
 package io.musician101.musiboard.scoreboard;
 
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,9 +13,6 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import static io.musician101.musiboard.MusiBoard.getPlugin;
 
@@ -79,7 +80,18 @@ public class MusiScoreboardManager {
     public void load() {
         Logger logger = getPlugin().getLogger();
         vanillaScoreboard = new VanillaScoreboard();
-        try (Stream<Path> stream = Files.list(getPlugin().getDataFolder().toPath())) {
+        Path dir = getPlugin().getDataFolder().toPath().resolve("scoreboards");
+        if (Files.notExists(dir)) {
+            try {
+                Files.createDirectories(dir);
+            }
+            catch (IOException e) {
+                logger.log(Level.SEVERE, "An error occurred while trying to load scoreboards.", e);
+                return;
+            }
+        }
+
+        try (Stream<Path> stream = Files.list(dir)) {
             stream.forEach(path -> scoreboards.add(new MusiScoreboard(YamlConfiguration.loadConfiguration(path.toFile()))));
         }
         catch (IOException e) {

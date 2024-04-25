@@ -1,17 +1,5 @@
 package io.musician101.musiboard.scoreboard;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.stream.Stream;
-import javax.annotation.Nullable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Bukkit;
@@ -28,6 +16,19 @@ import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
 import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.stream.Stream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.musician101.musiboard.MusiBoard.getPlugin;
@@ -305,10 +306,16 @@ public class MusiScoreboard {
         yaml.set("DisplaySlots", y);
         yaml.set("Players", players.stream().map(UUID::toString).toList());
         try {
-            Path data = getPlugin().getDataFolder().toPath();
-            Files.createDirectory(data);
+            Path data = getPlugin().getDataFolder().toPath().resolve("scoreboards");
+            if (Files.notExists(data)) {
+                Files.createDirectory(data);
+            }
+
             Path path = data.resolve(name + ".yml");
-            Files.createFile(path);
+            if (Files.notExists(path)) {
+                Files.createFile(path);
+            }
+
             yaml.save(path.toFile());
         }
         catch (IOException e) {

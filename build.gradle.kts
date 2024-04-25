@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.musician101"
-version = "1.0.1"
+version = "1.1.0-SNAPSHOT"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
@@ -23,9 +23,7 @@ repositories {
 dependencies {
     compileOnly("org.jetbrains:annotations:24.0.1")
     compileOnlyApi("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
-    api("com.github.Musician101:Bukkitier:1.3.3") {
-        exclude("org.spigotmc")
-    }
+    api("com.github.Musician101:Bukkitier:2.0.0")
 }
 
 tasks {

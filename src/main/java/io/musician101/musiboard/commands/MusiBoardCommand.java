@@ -1,7 +1,6 @@
 package io.musician101.musiboard.commands;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musiboard.scoreboard.MusiScoreboardManager;
 import net.kyori.adventure.audience.Audience;
@@ -10,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import static io.musician101.musiboard.Messages.PREFIX;
 import static io.musician101.musiboard.MusiBoard.getPlugin;
 import static net.kyori.adventure.text.Component.textOfChildren;
 
@@ -39,7 +39,7 @@ public abstract class MusiBoardCommand {
     }
 
     public void sendMessage(Audience audience, ComponentLike... components) {
-        audience.sendMessage(textOfChildren(Messages.PREFIX, textOfChildren(components)));
+        audience.sendMessage(textOfChildren(PREFIX, textOfChildren(components)));
     }
 
     public void sendMessage(CommandContext<CommandSender> context, ComponentLike... components) {

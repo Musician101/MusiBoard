@@ -5,24 +5,26 @@ import com.mojang.brigadier.context.CommandContext;
 import io.musician101.bukkitier.command.Command;
 import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.bukkitier.command.help.HelpMainCommand;
-import io.musician101.musiboard.Messages;
-import io.musician101.musiboard.MusiBoard;
 import io.musician101.musiboard.commands.objectives.ObjectivesCommand;
 import io.musician101.musiboard.commands.players.PlayersCommand;
 import io.musician101.musiboard.commands.scoreboard.ScoreboardCommand;
 import io.musician101.musiboard.commands.team.TeamCommand;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
+import static io.musician101.musiboard.Messages.PREFIX;
+import static io.musician101.musiboard.MusiBoard.getPlugin;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.textOfChildren;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
+import static net.kyori.adventure.text.minimessage.MiniMessage.miniMessage;
 
 public class MBCommand extends HelpMainCommand {
 
     public MBCommand() {
-        super(MusiBoard.getPlugin());
+        super(getPlugin());
     }
 
     @NotNull
@@ -32,9 +34,15 @@ public class MBCommand extends HelpMainCommand {
 
             @Override
             public int execute(@NotNull CommandContext<CommandSender> context) {
-                MusiBoard.getPlugin().reload();
-                context.getSource().sendMessage(textOfChildren(Messages.PREFIX, text("Config reloaded.", GREEN)));
+                getPlugin().reload();
+                context.getSource().sendMessage(textOfChildren(PREFIX, text("Config reloaded.", GREEN)));
                 return 1;
+            }
+
+            @NotNull
+            @Override
+            public String description(@NotNull CommandSender sender) {
+                return "Reloads the config.";
             }
 
             @NotNull
@@ -45,9 +53,9 @@ public class MBCommand extends HelpMainCommand {
         });
     }
 
-    @SuppressWarnings("deprecation")
     private void commandInfo(CommandSender sender, Command<? extends ArgumentBuilder<CommandSender, ?>> mbcmd) {
-        mbcmd.arguments().stream().filter(cmd -> cmd.canUse(sender)).forEach(cmd -> sender.spigot().sendMessage(commandInfo(cmd, sender)));
+        String string = "<click:suggest_command:/" + mbcmd.name() + ">/" + mbcmd.name() + " <dark_gray>- <gray>" + mbcmd.description(sender);
+        sender.sendMessage(miniMessage().deserialize(string));
     }
 
     @Override

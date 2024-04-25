@@ -3,20 +3,23 @@ package io.musician101.musiboard.commands.objectives;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.musician101.bukkitier.command.ArgumentCommand;
 import io.musician101.bukkitier.command.Command;
 import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.commands.arguments.EnumArgumentType;
+import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
@@ -34,9 +37,11 @@ class SetDisplayCommand extends MusiBoardCommand implements LiteralCommand {
                 return List.of(new ObjectiveArgument() {
 
                     @Override
-                    public int execute(@NotNull CommandContext<CommandSender> context) {
+                    public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
                         Player player = getPlayer(context);
-                        setDisplaySlot(player, context.getArgument("displaySlot", DisplaySlot.class), getScoreboard(player).getObjective(context.getArgument(name(), String.class)));
+                        DisplaySlot displaySlot = context.getArgument("slot", DisplaySlot.class);
+                        Objective objective = ObjectiveArgumentType.get(context, name());
+                        setDisplaySlot(player, displaySlot, objective);
                         return 1;
                     }
                 });
