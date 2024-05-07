@@ -5,6 +5,7 @@ import io.musician101.bukkitier.command.Command;
 import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.musiboard.commands.MusiBoardCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
+import io.musician101.musiboard.commands.objectives.modify.numberformat.NumberFormatCommand;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +21,7 @@ public class ModifyCommand extends MusiBoardCommand implements LiteralCommand {
             @NotNull
             @Override
             public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
-                return List.of(new DisplayNameCommand(), new RenderTypeCommand());
+                return List.of(new DisplayAutoUpdateCommand(), new DisplayNameCommand(), new NumberFormatCommand(), new RenderTypeCommand());
             }
         });
     }

@@ -20,6 +20,16 @@ public final class MusiBoard extends JavaPlugin implements Listener {
     @NotNull
     private final MusiScoreboardManager manager = new MusiScoreboardManager();
 
+    public boolean isPaperInstalled() {
+        try {
+            Class.forName("io.papermc.paper.scoreboard.numbers.NumberFormat");
+            return true;
+        }
+        catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
     @NotNull
     public static MusiBoard getPlugin() {
         return getPlugin(MusiBoard.class);
