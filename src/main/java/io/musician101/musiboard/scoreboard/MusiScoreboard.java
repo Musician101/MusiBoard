@@ -251,75 +251,77 @@ public class MusiScoreboard {
     }
 
     public void save() {
-        YamlConfiguration yaml = new YamlConfiguration();
-        yaml.set("Name", name);
-        yaml.set("SaveData", saveData);
-        ConfigurationSection noSave = yaml.createSection("noSave");
-        noSave.set("Objectives", objectivesNoSave);
-        noSave.set("Teams", teamsNoSave);
-        List<ConfigurationSection> objectives = new ArrayList<>();
-        List<ConfigurationSection> scores = new ArrayList<>();
-        scoreboard.getObjectives().stream().filter(objective -> objectivesNoSave.stream().noneMatch(o -> o.equals(objective.getName()))).forEach(o -> {
-            YamlConfiguration objective = new YamlConfiguration();
-            objective.set("CriteriaName", o.getTrackedCriteria().getName());
-            set(objective, "DisplayName", o.displayName());
-            objective.set("Name", o.getName());
-            objective.set("RenderType", o.getRenderType().toString().toLowerCase());
-            objectives.add(objective);
-            scoreboard.getEntries().forEach(e -> {
-                YamlConfiguration score = new YamlConfiguration();
-                Score s = o.getScore(e);
-                int scoreAmount = s.getScore();
-                if (scoreAmount == 0) {
-                    return;
+        if (saveData) {
+            YamlConfiguration yaml = new YamlConfiguration();
+            yaml.set("Name", name);
+            yaml.set("SaveData", saveData);
+            ConfigurationSection noSave = yaml.createSection("noSave");
+            noSave.set("Objectives", objectivesNoSave);
+            noSave.set("Teams", teamsNoSave);
+            List<ConfigurationSection> objectives = new ArrayList<>();
+            List<ConfigurationSection> scores = new ArrayList<>();
+            scoreboard.getObjectives().stream().filter(objective -> objectivesNoSave.stream().noneMatch(o -> o.equals(objective.getName()))).forEach(o -> {
+                YamlConfiguration objective = new YamlConfiguration();
+                objective.set("CriteriaName", o.getTrackedCriteria().getName());
+                set(objective, "DisplayName", o.displayName());
+                objective.set("Name", o.getName());
+                objective.set("RenderType", o.getRenderType().toString().toLowerCase());
+                objectives.add(objective);
+                scoreboard.getEntries().forEach(e -> {
+                    YamlConfiguration score = new YamlConfiguration();
+                    Score s = o.getScore(e);
+                    int scoreAmount = s.getScore();
+                    if (scoreAmount == 0) {
+                        return;
+                    }
+
+                    score.set("Score", scoreAmount);
+                    score.set("Name", e);
+                    score.set("Objective", o.getName());
+                    scores.add(score);
+                });
+            });
+            yaml.set("Objectives", objectives);
+            yaml.set("PlayerScores", scores);
+            yaml.set("Teams", scoreboard.getTeams().stream().filter(team -> teamsNoSave.stream().noneMatch(t -> t.equals(team.getName()))).map(t -> {
+                YamlConfiguration y = new YamlConfiguration();
+                y.set("AllowFriendlyFire", t.allowFriendlyFire());
+                y.set("SeeFriendlyInvisibles", t.canSeeFriendlyInvisibles());
+                y.set("NameTagVisibility", toString(t.getOption(Option.NAME_TAG_VISIBILITY)));
+                y.set("DeathMessageVisibility", toString(t.getOption(Option.DEATH_MESSAGE_VISIBILITY)));
+                y.set("CollisionRule", toString(t.getOption(Option.COLLISION_RULE)));
+                set(y, "DisplayName", t.displayName());
+                y.set("Name", t.getName());
+                set(y, "MemberNamePrefix", t.prefix());
+                set(y, "MemberNameSuffix", t.suffix());
+                y.set("Players", t.getEntries());
+                return y;
+            }).toList());
+            YamlConfiguration y = new YamlConfiguration();
+            Arrays.stream(DisplaySlot.values()).forEach(d -> {
+                Objective o = scoreboard.getObjective(d);
+                if (o != null) {
+                    y.set("slot_" + d.toString().toLowerCase(), o.getName());
+                }
+            });
+            yaml.set("DisplaySlots", y);
+            yaml.set("Players", players.stream().map(UUID::toString).toList());
+            try {
+                Path data = getPlugin().getDataFolder().toPath().resolve("scoreboards");
+                if (Files.notExists(data)) {
+                    Files.createDirectory(data);
                 }
 
-                score.set("Score", scoreAmount);
-                score.set("Name", e);
-                score.set("Objective", o.getName());
-                scores.add(score);
-            });
-        });
-        yaml.set("Objectives", objectives);
-        yaml.set("PlayerScores", scores);
-        yaml.set("Teams", scoreboard.getTeams().stream().filter(team -> teamsNoSave.stream().noneMatch(t -> t.equals(team.getName()))).map(t -> {
-            YamlConfiguration y = new YamlConfiguration();
-            y.set("AllowFriendlyFire", t.allowFriendlyFire());
-            y.set("SeeFriendlyInvisibles", t.canSeeFriendlyInvisibles());
-            y.set("NameTagVisibility", toString(t.getOption(Option.NAME_TAG_VISIBILITY)));
-            y.set("DeathMessageVisibility", toString(t.getOption(Option.DEATH_MESSAGE_VISIBILITY)));
-            y.set("CollisionRule", toString(t.getOption(Option.COLLISION_RULE)));
-            set(y, "DisplayName", t.displayName());
-            y.set("Name", t.getName());
-            set(y, "MemberNamePrefix", t.prefix());
-            set(y, "MemberNameSuffix", t.suffix());
-            y.set("Players", t.getEntries());
-            return y;
-        }).toList());
-        YamlConfiguration y = new YamlConfiguration();
-        Arrays.stream(DisplaySlot.values()).forEach(d -> {
-            Objective o = scoreboard.getObjective(d);
-            if (o != null) {
-                y.set("slot_" + d.toString().toLowerCase(), o.getName());
-            }
-        });
-        yaml.set("DisplaySlots", y);
-        yaml.set("Players", players.stream().map(UUID::toString).toList());
-        try {
-            Path data = getPlugin().getDataFolder().toPath().resolve("scoreboards");
-            if (Files.notExists(data)) {
-                Files.createDirectory(data);
-            }
+                Path path = data.resolve(name + ".yml");
+                if (Files.notExists(path)) {
+                    Files.createFile(path);
+                }
 
-            Path path = data.resolve(name + ".yml");
-            if (Files.notExists(path)) {
-                Files.createFile(path);
+                yaml.save(path.toFile());
             }
-
-            yaml.save(path.toFile());
-        }
-        catch (IOException e) {
-            getPlugin().getLogger().log(Level.SEVERE, "An error occurred while trying to save " + name + ".yml", e);
+            catch (IOException e) {
+                getPlugin().getLogger().log(Level.SEVERE, "An error occurred while trying to save " + name + ".yml", e);
+            }
         }
     }
 

@@ -116,7 +116,7 @@ public class MusiScoreboardManager {
     }
 
     public void save() {
-        scoreboards.forEach(MusiScoreboard::save);
+        scoreboards.stream().filter(MusiScoreboard::saveData).forEach(MusiScoreboard::save);
         getPlugin().getLogger().info(scoreboards.size() + " scoreboard(s) saved.");
     }
 
