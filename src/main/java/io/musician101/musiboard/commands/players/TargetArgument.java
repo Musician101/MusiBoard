@@ -20,7 +20,7 @@ public abstract class TargetArgument extends MusiBoardCommand implements Argumen
     }
 
     public Optional<Entity> getTarget(@NotNull CommandContext<CommandSender> context, @NotNull String name) {
-        return Optional.of(getTargets(context, name)).filter(l -> !l.isEmpty()).map(l -> l.iterator().next());
+        return Optional.of(getTargets(context, name)).filter(l -> !l.isEmpty()).map(List::getFirst);
     }
 
     public List<Entity> getTargets(@NotNull CommandContext<CommandSender> context) {
