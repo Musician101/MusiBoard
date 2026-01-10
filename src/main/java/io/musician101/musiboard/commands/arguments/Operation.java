@@ -1,9 +1,10 @@
 package io.musician101.musiboard.commands.arguments;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import io.musician101.musicommand.core.command.CommandException;
 import org.bukkit.scoreboard.Score;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public enum Operation {
 
     ASSIGNMENT("=") {
@@ -32,9 +33,9 @@ public enum Operation {
     },
     FLOOR_DIVISION("/=") {
         @Override
-        public void apply(Score a, Score b) throws CommandSyntaxException {
+        public void apply(Score a, Score b) throws CommandException {
             if (b.getScore() == 0) {
-                throw new SimpleCommandExceptionType(() -> "Cannot divide by 0!").create();
+                throw new CommandException("Cannot divide by 0!");
             }
 
             a.setScore(Math.floorDiv(a.getScore(), b.getScore()));
@@ -42,9 +43,9 @@ public enum Operation {
     },
     MODULUS("%=") {
         @Override
-        public void apply(Score a, Score b) throws CommandSyntaxException {
+        public void apply(Score a, Score b) throws CommandException {
             if (b.getScore() == 0) {
-                throw new SimpleCommandExceptionType(() -> "Cannot divide by 0!").create();
+                throw new CommandException("Cannot divide by 0!");
             }
 
             a.setScore(Math.floorMod(a.getScore(), b.getScore()));
@@ -77,7 +78,7 @@ public enum Operation {
         this.operator = operator;
     }
 
-    public abstract void apply(Score a, Score b) throws CommandSyntaxException;
+    public abstract void apply(Score a, Score b) throws CommandException;
 
     public String operator() {
         return operator;

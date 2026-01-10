@@ -7,9 +7,11 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 public class MusiScoreboardArgumentType extends MusiBoardArgumentType<MusiScoreboard> {
 
     @Override

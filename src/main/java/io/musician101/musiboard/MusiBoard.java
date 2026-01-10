@@ -1,26 +1,25 @@
 package io.musician101.musiboard;
 
-import io.musician101.musiboard.commands.MBCommand;
+import io.musician101.musiboard.commands.MBMain;
 import io.musician101.musiboard.commands.objectives.ObjectivesCommand;
 import io.musician101.musiboard.commands.players.PlayersCommand;
 import io.musician101.musiboard.commands.scoreboard.ScoreboardCommand;
 import io.musician101.musiboard.commands.team.TeamCommand;
 import io.musician101.musiboard.scoreboard.MusiScoreboardManager;
+import io.musician101.musicommand.paper.PaperMusiCommand;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
-import static io.musician101.bukkitier.Bukkitier.registerCommand;
-
+@NullMarked
 public final class MusiBoard extends JavaPlugin implements Listener {
 
-    @NotNull
     private final MusiScoreboardManager manager = new MusiScoreboardManager();
 
-    @NotNull
     public static MusiBoard getPlugin() {
         return getPlugin(MusiBoard.class);
     }
@@ -35,7 +34,6 @@ public final class MusiBoard extends JavaPlugin implements Listener {
         }
     }
 
-    @NotNull
     public MusiScoreboardManager getManager() {
         return manager;
     }
@@ -48,11 +46,12 @@ public final class MusiBoard extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         reload();
-        registerCommand(this, new MBCommand());
-        registerCommand(this, new ObjectivesCommand());
-        registerCommand(this, new PlayersCommand());
-        registerCommand(this, new ScoreboardCommand());
-        registerCommand(this, new TeamCommand());
+        PaperMusiCommand<ComponentLike> musiCommand = PaperMusiCommand.newAdventureInstance(this);
+        musiCommand.registerCommand(new MBMain(), "mb");
+        musiCommand.registerCommand(new ObjectivesCommand());
+        musiCommand.registerCommand(new PlayersCommand());
+        musiCommand.registerCommand(new ScoreboardCommand());
+        musiCommand.registerCommand(new TeamCommand());
         manager.load();
         getServer().getPluginManager().registerEvents(this, this);
     }

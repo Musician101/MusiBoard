@@ -4,18 +4,19 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.musician101.bukkitier.command.ArgumentCommand;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
 import io.musician101.musiboard.commands.DisplayNameArgument;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.CriteriaArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
+import io.musician101.musicommand.paper.command.PaperArgumentCommand;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
-import org.bukkit.command.CommandSender;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Criteria;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
@@ -23,25 +24,24 @@ import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
-class AddCommand extends MusiBoardCommand implements LiteralCommand {
+//TODO fix nullability annotations once MusiCommand gets fixed
+@NullMarked
+class AddCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
-        return List.of(new ArgumentCommand<String>() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
+        return List.of(new PaperArgumentCommand.AdventureFormat<String>() {
 
-            @NotNull
             @Override
-            public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
-                return List.of(new ArgumentCommand<Criteria>() {
+            public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
+                return List.of(new PaperArgumentCommand.AdventureFormat<Criteria>() {
 
-                    @NotNull
                     @Override
-                    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+                    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
                         return List.of(new DisplayNameArgument() {
 
                             @Override
-                            public int execute(@NotNull CommandContext<CommandSender> context) {
+                            public Integer execute(CommandContext<CommandSourceStack> context) {
                                 String name = StringArgumentType.getString(context, "objective");
                                 Criteria criteria = context.getArgument("criteria", Criteria.class);
                                 Component displayName = get(context);
@@ -53,7 +53,7 @@ class AddCommand extends MusiBoardCommand implements LiteralCommand {
                     }
 
                     @Override
-                    public int execute(@NotNull CommandContext<CommandSender> context) {
+                    public Integer execute(CommandContext<CommandSourceStack> context) {
                         String name = StringArgumentType.getString(context, "objective");
                         Criteria criteria = context.getArgument(name(), Criteria.class);
                         Player player = getPlayer(context);
@@ -61,13 +61,11 @@ class AddCommand extends MusiBoardCommand implements LiteralCommand {
                         return 1;
                     }
 
-                    @NotNull
                     @Override
                     public String name() {
                         return "criteria";
                     }
 
-                    @NotNull
                     @Override
                     public ArgumentType<Criteria> type() {
                         return new CriteriaArgumentType();
@@ -75,13 +73,11 @@ class AddCommand extends MusiBoardCommand implements LiteralCommand {
                 });
             }
 
-            @NotNull
             @Override
             public String name() {
                 return "objective";
             }
 
-            @NotNull
             @Override
             public ArgumentType<String> type() {
                 return StringArgumentType.word();
@@ -89,13 +85,11 @@ class AddCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @NotNull
     @Override
-    public String description(@NotNull CommandSender sender) {
-        return "Add an objective to the active scoreboard.";
+    public ComponentLike description(CommandSourceStack source) {
+        return Component.text("Add an objective to the active scoreboard.");
     }
 
-    @NotNull
     @Override
     public String name() {
         return "add";
@@ -112,9 +106,8 @@ class AddCommand extends MusiBoardCommand implements LiteralCommand {
         sendMessage(player, text("Objective ", RED), displayName, text(" already exists.", RED));
     }
 
-    @NotNull
     @Override
-    public String usage(@NotNull CommandSender sender) {
-        return "/objectives add <objective> <criteria> [<displayName>]";
+    public ComponentLike usage(CommandSourceStack source) {
+        return Component.text("/objectives add <objective> <criteria> [<displayName>]");
     }
 }

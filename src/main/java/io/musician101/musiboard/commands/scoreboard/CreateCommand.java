@@ -4,12 +4,15 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.musician101.bukkitier.command.ArgumentCommand;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
+import io.musician101.musicommand.paper.command.PaperArgumentCommand;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
@@ -17,18 +20,18 @@ import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
-class CreateCommand extends MusiBoardCommand implements LiteralCommand {
+@NullMarked
+class CreateCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
-        return List.of(new ArgumentCommand<String>() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
+        return List.of(new PaperArgumentCommand.AdventureFormat<String>() {
 
             @Override
-            public int execute(@NotNull CommandContext<CommandSender> context) {
+            public Integer execute(CommandContext<CommandSourceStack> context) {
                 String name = StringArgumentType.getString(context, name());
                 boolean success = getManager().registerNewScoreboard(name);
-                CommandSender sender = context.getSource();
+                CommandSender sender = context.getSource().getSender();
                 if (success) {
                     sendMessage(sender, text(name + " created successfully.", GREEN));
                 }
@@ -39,13 +42,11 @@ class CreateCommand extends MusiBoardCommand implements LiteralCommand {
                 return 1;
             }
 
-            @NotNull
             @Override
             public String name() {
                 return "name";
             }
 
-            @NotNull
             @Override
             public ArgumentType<String> type() {
                 return StringArgumentType.word();
@@ -54,25 +55,22 @@ class CreateCommand extends MusiBoardCommand implements LiteralCommand {
     }
 
     @Override
-    public boolean canUse(@NotNull CommandSender sender) {
-        return canEdit(sender);
+    public boolean canUse(CommandSourceStack source) {
+        return canEdit(source.getSender());
     }
 
-    @NotNull
     @Override
-    public String description(@NotNull CommandSender sender) {
-        return "Create a new scoreboard";
+    public ComponentLike description(CommandSourceStack source) {
+        return Component.text("Create a new scoreboard");
     }
 
-    @NotNull
     @Override
     public String name() {
         return "create";
     }
 
-    @NotNull
     @Override
-    public String usage(@NotNull CommandSender sender) {
-        return "/sb create <name>";
+    public ComponentLike usage(CommandSourceStack source) {
+        return Component.text("/sb create <name>");
     }
 }

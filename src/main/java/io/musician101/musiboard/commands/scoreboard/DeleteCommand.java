@@ -2,29 +2,31 @@ package io.musician101.musiboard.commands.scoreboard;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.MusiScoreboardArgument;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
-class DeleteCommand extends MusiBoardCommand implements LiteralCommand {
+@NullMarked
+class DeleteCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
         return List.of(new MusiScoreboardArgument() {
 
             @Override
-            public int execute(@NotNull CommandContext<CommandSender> context) {
+            public Integer execute(CommandContext<CommandSourceStack> context) {
                 MusiScoreboard scoreboard = getScoreboard(context);
                 Bukkit.getOnlinePlayers().stream().filter(scoreboard::hasPlayer).forEach(player -> getManager().setScoreboard(player, getManager().getDefaultScoreboardOrVanilla()));
                 getManager().getScoreboards().remove(scoreboard);
@@ -35,25 +37,22 @@ class DeleteCommand extends MusiBoardCommand implements LiteralCommand {
     }
 
     @Override
-    public boolean canUse(@NotNull CommandSender sender) {
-        return canEdit(sender);
+    public boolean canUse(CommandSourceStack source) {
+        return canEdit(source.getSender());
     }
 
-    @NotNull
     @Override
-    public String description(@NotNull CommandSender sender) {
-        return "Delete a scoreboard.";
+    public ComponentLike description(CommandSourceStack source) {
+        return Component.text("Delete a scoreboard.");
     }
 
-    @NotNull
     @Override
     public String name() {
         return "delete";
     }
 
-    @NotNull
     @Override
-    public String usage(@NotNull CommandSender sender) {
-        return "/sb delete <name>";
+    public ComponentLike usage(CommandSourceStack source) {
+        return Component.text("/sb delete <name>");
     }
 }

@@ -1,45 +1,43 @@
 package io.musician101.musiboard.commands.team.modify;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
-import io.musician101.musiboard.commands.players.TargetArgument;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import io.musician101.musiboard.commands.MBCommand;
+import io.musician101.musiboard.commands.team.TeamArgument;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-public class ModifyCommand extends MusiBoardCommand implements LiteralCommand {
+@NullMarked
+public class ModifyCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
-        return List.of(new TargetArgument() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
+        return List.of(new TeamArgument() {
 
-            @NotNull
             @Override
-            public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+            public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
                 return List.of(new CollisionRuleCommand(), new ColorCommand(), new DeathMessageVisibilityCommand(), new DisplayNameCommand(), new FriendlyFireCommand(), new NameTagVisibilityCommand(), new PrefixCommand(), new SeeFriendlyInvisiblesCommand(), new SuffixCommand());
             }
         });
     }
 
-    @NotNull
     @Override
-    public String description(@NotNull CommandSender sender) {
-        return "Modifies the options of a team.";
+    public ComponentLike description(CommandSourceStack source) {
+        return Component.text("Modifies the options of a team.");
     }
 
-    @NotNull
     @Override
     public String name() {
         return "modify";
     }
 
-    @NotNull
     @Override
-    public String usage(@NotNull CommandSender sender) {
-        return "/team modify <team> <option> <value>";
+    public ComponentLike usage(CommandSourceStack source) {
+        return Component.text("/team modify <team> <option> <value>");
     }
 }

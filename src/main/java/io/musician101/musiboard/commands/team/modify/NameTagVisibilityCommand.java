@@ -2,38 +2,38 @@ package io.musician101.musiboard.commands.team.modify;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.EnumArgumentType;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
-import org.bukkit.command.CommandSender;
+import io.musician101.musicommand.core.command.CommandException;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
 
-public class NameTagVisibilityCommand extends MusiBoardCommand implements LiteralCommand {
+@NullMarked
+public class NameTagVisibilityCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
         return List.of(new OptionStatusArgument() {
 
             @Override
-            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
+            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Team team = TeamArgumentType.get(context);
                 team.setOption(Option.NAME_TAG_VISIBILITY, EnumArgumentType.get(context, name(), OptionStatus.class));
                 sendMessage(context, text("Name tag visibility updated successfully."));
                 return 1;
             }
 
-            @NotNull
             @Override
             public String name() {
                 return "nameTagVisibility";
@@ -41,7 +41,6 @@ public class NameTagVisibilityCommand extends MusiBoardCommand implements Litera
         });
     }
 
-    @NotNull
     @Override
     public String name() {
         return "nameTagVisibility";

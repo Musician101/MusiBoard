@@ -3,45 +3,44 @@ package io.musician101.musiboard.commands.team.modify;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.musician101.bukkitier.command.ArgumentCommand;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.ComponentArgumentType;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
+import io.musician101.musicommand.core.command.CommandException;
+import io.musician101.musicommand.paper.command.PaperArgumentCommand;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
-import org.bukkit.command.CommandSender;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.scoreboard.Team;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
-public class SuffixCommand extends MusiBoardCommand implements LiteralCommand {
+@NullMarked
+public class SuffixCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
-        return List.of(new ArgumentCommand<Component>() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
+        return List.of(new PaperArgumentCommand.AdventureFormat<Component>() {
 
             @Override
-            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
+            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Team team = TeamArgumentType.get(context);
                 team.suffix(ComponentArgumentType.get(context, name()));
                 sendMessage(context, text("Prefix updated successfully.", GREEN));
                 return 1;
             }
 
-            @NotNull
             @Override
             public String name() {
                 return "suffix";
             }
 
-            @NotNull
             @Override
             public ArgumentType<Component> type() {
                 return new ComponentArgumentType();
@@ -49,7 +48,6 @@ public class SuffixCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @NotNull
     @Override
     public String name() {
         return "prefix";

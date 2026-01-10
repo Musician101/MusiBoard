@@ -1,21 +1,20 @@
 package io.musician101.musiboard.commands.team;
 
 import com.mojang.brigadier.arguments.ArgumentType;
-import io.musician101.bukkitier.command.ArgumentCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType.TeamValue;
-import org.jetbrains.annotations.NotNull;
+import io.musician101.musicommand.paper.command.PaperArgumentCommand;
+import org.jspecify.annotations.NullMarked;
 
-public abstract class TeamArgument extends MusiBoardCommand implements ArgumentCommand<TeamValue> {
+@NullMarked
+public abstract class TeamArgument extends MBCommand implements PaperArgumentCommand.AdventureFormat<TeamValue> {
 
-    @NotNull
     @Override
     public String name() {
         return "team";
     }
 
-    @NotNull
     @Override
     public ArgumentType<TeamValue> type() {
         return new TeamArgumentType();

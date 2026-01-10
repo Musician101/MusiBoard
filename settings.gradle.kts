@@ -1,8 +1,8 @@
-rootProject.name = "MusiBoard"
 pluginManagement {
-    plugins {
-        java
-        `java-library`
-        id("com.github.johnrengelman.shadow") version "8.1.1"
+    repositories {
+        gradlePluginPortal()
+        maven("https://repo.papermc.io/repository/maven-public/")
     }
 }
+
+rootProject.name = "MusiBoard"

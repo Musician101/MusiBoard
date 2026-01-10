@@ -3,21 +3,22 @@ package io.musician101.musiboard.commands.arguments;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType.TeamValue;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
-import org.bukkit.command.CommandSender;
+import io.musician101.musicommand.core.command.CommandException;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 public class TeamArgumentType extends MusiBoardArgumentType<TeamValue> {
 
-    public static Team get(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
+    public static Team get(CommandContext<CommandSourceStack> context) throws CommandException {
         return context.getArgument("team", TeamValue.class).getTeam(context);
     }
 
@@ -38,25 +39,23 @@ public class TeamArgumentType extends MusiBoardArgumentType<TeamValue> {
 
     public class TeamValue {
 
-        @NotNull
         private final String teamName;
 
-        TeamValue(@NotNull String teamName) {
+        TeamValue(String teamName) {
             this.teamName = teamName;
         }
 
-        @NotNull
-        private Team getTeam(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
+        private Team getTeam(CommandContext<CommandSourceStack> context) throws CommandException {
             if (context.getSource() instanceof Player player) {
                 Team team = getScoreboard(player).getTeam(teamName);
                 if (team == null) {
-                    throw new SimpleCommandExceptionType(() -> "A team with that name does not exist.").create();
+                    throw new CommandException("A team with that name does not exist.");
                 }
 
                 return team;
             }
 
-            throw new SimpleCommandExceptionType(() -> "Player only command.").create();
+            throw new CommandException("Player only command.");
         }
     }
 }

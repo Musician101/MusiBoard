@@ -2,36 +2,37 @@ package io.musician101.musiboard.commands.players;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
-import org.bukkit.command.CommandSender;
+import io.musician101.musicommand.core.command.CommandException;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
-public class ResetCommand extends MusiBoardCommand implements LiteralCommand {
+@NullMarked
+public class ResetCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
         return List.of(new TargetArgument() {
 
-            @NotNull
             @Override
-            public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+            public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
                 return List.of(new ObjectiveArgument() {
 
                     @Override
-                    public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
+                    public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                         Player player = getPlayer(context);
                         Objective objective = getObjective(context);
                         getTargets(context).forEach(entity -> objective.getScoreFor(entity).resetScore());
@@ -42,7 +43,7 @@ public class ResetCommand extends MusiBoardCommand implements LiteralCommand {
             }
 
             @Override
-            public int execute(@NotNull CommandContext<CommandSender> context) {
+            public Integer execute(CommandContext<CommandSourceStack> context) {
                 Player player = getPlayer(context);
                 MusiScoreboard scoreboard = getScoreboard(player);
                 getTargets(context).forEach(entity -> scoreboard.resetScores(entity.getName()));
@@ -52,21 +53,18 @@ public class ResetCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @NotNull
     @Override
-    public String description(@NotNull CommandSender sender) {
-        return "Deletes score or all scores for the targets.";
+    public ComponentLike description(CommandSourceStack source) {
+        return Component.text("Deletes score or all scores for the targets.");
     }
 
-    @NotNull
     @Override
     public String name() {
         return "reset";
     }
 
-    @NotNull
     @Override
-    public String usage(@NotNull CommandSender sender) {
-        return "/players reset <targets> [<objective>]";
+    public ComponentLike usage(CommandSourceStack source) {
+        return Component.text("/players reset <targets> [<objective>]");
     }
 }

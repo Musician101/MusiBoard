@@ -2,18 +2,19 @@ package io.musician101.musiboard.commands.team;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
+import io.musician101.musicommand.core.command.CommandException;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.JoinConfiguration;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 import java.util.Set;
@@ -23,15 +24,15 @@ import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GRAY;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
-public class ListCommand extends MusiBoardCommand implements LiteralCommand {
+@NullMarked
+public class ListCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
         return List.of(new TeamArgument() {
 
             @Override
-            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
+            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Team team = TeamArgumentType.get(context);
                 Player player = getPlayer(context);
                 Set<String> entries = team.getEntries();
@@ -43,14 +44,13 @@ public class ListCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @NotNull
     @Override
-    public String description(@NotNull CommandSender sender) {
-        return "List all of the teams or the players in a specified team.";
+    public ComponentLike description(CommandSourceStack source) {
+        return Component.text("List all of the teams or the players in a specified team.");
     }
 
     @Override
-    public int execute(@NotNull CommandContext<CommandSender> context) {
+    public Integer execute(CommandContext<CommandSourceStack> context) {
         Player player = getPlayer(context);
         MusiScoreboard scoreboard = getScoreboard(player);
         Set<Team> teams = scoreboard.getTeams();
@@ -60,15 +60,13 @@ public class ListCommand extends MusiBoardCommand implements LiteralCommand {
         return 1;
     }
 
-    @NotNull
     @Override
     public String name() {
         return "list";
     }
 
-    @NotNull
     @Override
-    public String usage(@NotNull CommandSender sender) {
-        return "/team list [<team>]";
+    public ComponentLike usage(CommandSourceStack source) {
+        return Component.text("/team list [<team>]");
     }
 }

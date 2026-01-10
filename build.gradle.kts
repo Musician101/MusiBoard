@@ -1,27 +1,17 @@
-buildscript {
-    configurations {
-        classpath {
-            resolutionStrategy {
-                force("org.ow2.asm:asm:9.6")
-                force("org.ow2.asm:asm-commons:9.6")
-            }
-        }
-    }
-}
-
 plugins {
-    java
     `java-library`
     `maven-publish`
-    id("com.github.johnrengelman.shadow")
+    id("com.gradleup.shadow") version "9.3.0"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.19"
+    id("xyz.jpenilla.run-paper") version "2.3.1"
+    id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.3.1"
+    id("xyz.jpenilla.resource-factory-paper-convention") version "1.3.1"
 }
 
 group = "io.musician101"
 version = "1.1.0-SNAPSHOT"
 
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
-}
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 repositories {
     mavenCentral()
@@ -32,33 +22,31 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.jetbrains:annotations:24.0.1")
-    compileOnlyApi("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
-    api("com.github.Musician101:Bukkitier:2.0.0")
+    paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
+    //TODO waiting for testing to complete before pushing a release
+    api("com.github.Musician101.MusiCommand:paper:be49f96ace")
 }
 
 tasks {
     processResources {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        filesMatching("plugin.yml") {
-            expand("version" to project.version)
-        }
+    }
+
+    build {
+        dependsOn(shadowJar)
     }
 
     shadowJar {
         dependencies {
-            include(dependency("com.github.Musician101:"))
+            include(dependency("com.github.Musician101.MusiCommand:.*"))
         }
 
-        archiveClassifier.set("")
-        relocate("io.musician101.bukkitier", "io.musician101.musiboard.lib.io.musician101.bukkitier")
-        dependsOn("build")
+        archiveClassifier = ""
+        relocate("io.musician101.musicommand", "io.musician101.musiboard.lib.io.musician101.musicommand")
     }
 
-    register<Copy>("prepTestJar") {
-        dependsOn("shadowJar")
-        from("build/libs/${project.name}-${project.version}.jar")
-        into("server/plugins")
+    runServer {
+        minecraftVersion("1.21.11")
     }
 }
 
@@ -72,4 +60,18 @@ publishing {
             from(components["java"])
         }
     }
+}
+
+bukkitPluginYaml {
+    main = "io.musician101.musiboard.MusiBoard"
+    author = "Musician101"
+    apiVersion = "1.21.11"
+    foliaSupported = true
+}
+
+paperPluginYaml {
+    main = "io.musician101.musiboard.MusiBoard"
+    author = "Musician101"
+    apiVersion = "1.21.11"
+    foliaSupported = true
 }

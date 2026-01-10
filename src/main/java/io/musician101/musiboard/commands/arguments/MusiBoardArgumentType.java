@@ -4,19 +4,18 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musiboard.scoreboard.MusiScoreboardManager;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import static io.musician101.musiboard.MusiBoard.getPlugin;
 
+@NullMarked
 public abstract class MusiBoardArgumentType<T> implements ArgumentType<T> {
 
-    @NotNull
     protected MusiScoreboardManager getManager() {
         return getPlugin().getManager();
     }
 
-    @NotNull
-    protected MusiScoreboard getScoreboard(@NotNull Player player) {
+    protected MusiScoreboard getScoreboard(Player player) {
         return getManager().getScoreboard(player);
     }
 }

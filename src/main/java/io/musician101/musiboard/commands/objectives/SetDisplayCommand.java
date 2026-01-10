@@ -3,41 +3,42 @@ package io.musician101.musiboard.commands.objectives;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.musician101.bukkitier.command.ArgumentCommand;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.commands.arguments.EnumArgumentType;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
-import org.bukkit.command.CommandSender;
+import io.musician101.musicommand.core.command.CommandException;
+import io.musician101.musicommand.paper.command.PaperArgumentCommand;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
-class SetDisplayCommand extends MusiBoardCommand implements LiteralCommand {
+@NullMarked
+class SetDisplayCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
-        return List.of(new ArgumentCommand<DisplaySlot>() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
+        return List.of(new PaperArgumentCommand.AdventureFormat<DisplaySlot>() {
 
-            @NotNull
             @Override
-            public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+            public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
                 return List.of(new ObjectiveArgument() {
 
                     @Override
-                    public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
+                    public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                         Player player = getPlayer(context);
                         DisplaySlot displaySlot = context.getArgument("slot", DisplaySlot.class);
                         Objective objective = ObjectiveArgumentType.get(context, name());
@@ -48,18 +49,16 @@ class SetDisplayCommand extends MusiBoardCommand implements LiteralCommand {
             }
 
             @Override
-            public int execute(@NotNull CommandContext<CommandSender> context) {
+            public Integer execute(CommandContext<CommandSourceStack> context) {
                 setDisplaySlot((Player) context.getSource(), EnumArgumentType.get(context, name(), DisplaySlot.class), null);
                 return 1;
             }
 
-            @NotNull
             @Override
             public String name() {
                 return "slot";
             }
 
-            @NotNull
             @Override
             public ArgumentType<DisplaySlot> type() {
                 return new EnumArgumentType<>(DisplaySlot::getId, DisplaySlot.values());
@@ -67,21 +66,21 @@ class SetDisplayCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @NotNull
     @Override
-    public String description(@NotNull CommandSender sender) {
-        return "Set the display slot of an objective.";
+    public ComponentLike description(CommandSourceStack source) {
+        return Component.text("Set the display slot of an objective.");
     }
 
-    @NotNull
     @Override
     public String name() {
         return "setDisplay";
     }
 
-    private void setDisplaySlot(@NotNull Player player, @NotNull DisplaySlot slot, @Nullable Objective objective) {
+    private void setDisplaySlot(Player player, DisplaySlot slot, @Nullable Objective objective) {
         MusiScoreboard scoreboard = getScoreboard(player);
         if (objective == null) {
+            //TODO The way this is handled by Paper results in non-vanilla like behavior
+            //TODO Objectives can only be in one display slot and clearing one display slot will clear all of them, if they're the same objective
             scoreboard.clearSlot(slot);
             sendMessage(player, text("Display slot cleared.", GREEN));
             return;
@@ -91,9 +90,8 @@ class SetDisplayCommand extends MusiBoardCommand implements LiteralCommand {
         sendMessage(player, text("Display slot set.", GREEN));
     }
 
-    @NotNull
     @Override
-    public String usage(@NotNull CommandSender sender) {
-        return "/objectives setDisplay <slot> [<objective>]";
+    public ComponentLike usage(CommandSourceStack source) {
+        return Component.text("/objectives setDisplay <slot> [<objective>]");
     }
 }

@@ -2,7 +2,7 @@ package io.musician101.musiboard.scoreboard;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,23 +16,23 @@ import java.util.stream.Stream;
 
 import static io.musician101.musiboard.MusiBoard.getPlugin;
 
+@NullMarked
 public class MusiScoreboardManager {
 
     private final List<MusiScoreboard> scoreboards = new ArrayList<>();
+    // This is initialized when load() is called.
+    @SuppressWarnings("NotNullFieldNotInitialized")
     private VanillaScoreboard vanillaScoreboard;
 
-    @NotNull
     public Optional<MusiScoreboard> getDefaultScoreboard() {
         return getScoreboard(getPlugin().getConfig().getString("defaultScoreboard", "minecraft"));
     }
 
-    @NotNull
     public MusiScoreboard getDefaultScoreboardOrVanilla() {
         return getDefaultScoreboard().orElse(vanillaScoreboard);
     }
 
-    @NotNull
-    public MusiScoreboard getScoreboard(@NotNull Player player) {
+    public MusiScoreboard getScoreboard(Player player) {
         if (vanillaScoreboard.hasPlayer(player)) {
             return vanillaScoreboard;
         }
@@ -43,8 +43,7 @@ public class MusiScoreboardManager {
         });
     }
 
-    @NotNull
-    public Optional<MusiScoreboard> getScoreboard(@NotNull String name) {
+    public Optional<MusiScoreboard> getScoreboard(String name) {
         if (name.equals(vanillaScoreboard.getName())) {
             return Optional.of(vanillaScoreboard);
         }
@@ -52,27 +51,22 @@ public class MusiScoreboardManager {
         return scoreboards.stream().filter(m -> name.equals(m.getName())).findFirst();
     }
 
-    @NotNull
-    public Optional<MusiScoreboard> getScoreboardOrDefault(@NotNull String name) {
+    public Optional<MusiScoreboard> getScoreboardOrDefault(String name) {
         return getScoreboard(name).or(this::getDefaultScoreboard);
     }
 
-    @NotNull
-    public MusiScoreboard getScoreboardOrDefaultOrVanilla(@NotNull String name) {
+    public MusiScoreboard getScoreboardOrDefaultOrVanilla(String name) {
         return getScoreboardOrDefault(name).orElse(vanillaScoreboard);
     }
 
-    @NotNull
-    public MusiScoreboard getScoreboardOrVanilla(@NotNull String name) {
+    public MusiScoreboard getScoreboardOrVanilla(String name) {
         return getScoreboard(name).orElse(vanillaScoreboard);
     }
 
-    @NotNull
     public List<MusiScoreboard> getScoreboards() {
         return scoreboards;
     }
 
-    @NotNull
     public VanillaScoreboard getVanillaScoreboard() {
         return vanillaScoreboard;
     }
@@ -101,7 +95,7 @@ public class MusiScoreboardManager {
         logger.info(scoreboards.size() + " scoreboard(s) loaded.");
     }
 
-    public boolean registerNewScoreboard(@NotNull String name) {
+    public boolean registerNewScoreboard(String name) {
         if (name.equals(vanillaScoreboard.getName())) {
             return false;
         }
@@ -120,7 +114,7 @@ public class MusiScoreboardManager {
         getPlugin().getLogger().info(scoreboards.size() + " scoreboard(s) saved.");
     }
 
-    public void setScoreboard(@NotNull Player player, @NotNull MusiScoreboard scoreboard) {
+    public void setScoreboard(Player player, MusiScoreboard scoreboard) {
         scoreboards.forEach(s -> s.removePlayer(player));
         scoreboard.addPlayer(player);
     }

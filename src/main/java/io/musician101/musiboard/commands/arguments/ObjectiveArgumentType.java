@@ -3,20 +3,20 @@ package io.musician101.musiboard.commands.arguments;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType.ObjectiveValue;
-import org.bukkit.command.CommandSender;
+import io.musician101.musicommand.core.command.CommandException;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ObjectiveArgumentType extends MusiBoardArgumentType<ObjectiveValue> {
 
-    public static Objective get(@NotNull CommandContext<CommandSender> context, @NotNull String name) throws CommandSyntaxException {
+    public static Objective get(@NonNull CommandContext<CommandSourceStack> context, @NonNull String name) throws CommandException {
         return context.getArgument(name, ObjectiveValue.class).get(context);
     }
 
@@ -35,7 +35,7 @@ public class ObjectiveArgumentType extends MusiBoardArgumentType<ObjectiveValue>
         return context -> {
             Objective objective = getScoreboard((Player) context.getSource()).getObjective(name);
             if (objective == null) {
-                throw new SimpleCommandExceptionType(() -> "An objective with that name does not exist.").create();
+                throw new CommandException("An objective with that name does not exist.");
             }
 
             return objective;
@@ -44,7 +44,7 @@ public class ObjectiveArgumentType extends MusiBoardArgumentType<ObjectiveValue>
 
     public interface ObjectiveValue {
 
-        @NotNull
-        Objective get(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException;
+        @NonNull
+        Objective get(@NonNull CommandContext<CommandSourceStack> context) throws CommandException;
     }
 }

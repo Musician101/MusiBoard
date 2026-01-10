@@ -8,9 +8,11 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 public class EntitiesArgumentType implements ArgumentType<String> {
 
     @Override

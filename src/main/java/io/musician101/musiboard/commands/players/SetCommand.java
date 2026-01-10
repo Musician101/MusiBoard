@@ -4,41 +4,41 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.musician101.bukkitier.command.ArgumentCommand;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
-import org.bukkit.command.CommandSender;
+import io.musician101.musicommand.core.command.CommandException;
+import io.musician101.musicommand.paper.command.PaperArgumentCommand;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.entity.Entity;
 import org.bukkit.scoreboard.Objective;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
-public class SetCommand extends MusiBoardCommand implements LiteralCommand {
+@NullMarked
+public class SetCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
         return List.of(new TargetArgument() {
 
-            @NotNull
             @Override
-            public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+            public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
                 return List.of(new ObjectiveArgument() {
 
-                    @NotNull
                     @Override
-                    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
-                        return List.of(new ArgumentCommand<Integer>() {
+                    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
+                        return List.of(new PaperArgumentCommand.AdventureFormat<Integer>() {
 
                             @Override
-                            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
+                            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                                 Objective objective = getObjective(context);
                                 int s = IntegerArgumentType.getInteger(context, name());
                                 List<Entity> entities = getTargets(context);
@@ -48,13 +48,11 @@ public class SetCommand extends MusiBoardCommand implements LiteralCommand {
                                 return 1;
                             }
 
-                            @NotNull
                             @Override
                             public String name() {
                                 return "set";
                             }
 
-                            @NotNull
                             @Override
                             public ArgumentType<Integer> type() {
                                 return IntegerArgumentType.integer();
@@ -66,21 +64,18 @@ public class SetCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @NotNull
     @Override
-    public String description(@NotNull CommandSender sender) {
-        return "Set the targets' score for an objective.";
+    public ComponentLike description(CommandSourceStack source) {
+        return Component.text("Set the targets' score for an objective.");
     }
 
-    @NotNull
     @Override
     public String name() {
         return "set";
     }
 
-    @NotNull
     @Override
-    public String usage(@NotNull CommandSender sender) {
-        return LiteralCommand.super.usage(sender);
+    public ComponentLike usage(CommandSourceStack source) {
+        return PaperLiteralCommand.AdventureFormat.super.usage(source);
     }
 }

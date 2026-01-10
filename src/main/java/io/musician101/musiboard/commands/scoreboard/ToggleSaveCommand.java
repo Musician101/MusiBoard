@@ -2,29 +2,31 @@ package io.musician101.musiboard.commands.scoreboard;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.MusiScoreboardArgument;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
-import org.bukkit.command.CommandSender;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
-public class ToggleSaveCommand extends MusiBoardCommand implements LiteralCommand {
+@NullMarked
+public class ToggleSaveCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
         return List.of(new MusiScoreboardArgument() {
 
             @Override
-            public int execute(@NotNull CommandContext<CommandSender> context) {
+            public Integer execute(CommandContext<CommandSourceStack> context) {
                 Player player = getPlayer(context);
                 MusiScoreboard scoreboard = getScoreboard(context);
                 boolean save = !scoreboard.saveData();
@@ -35,21 +37,18 @@ public class ToggleSaveCommand extends MusiBoardCommand implements LiteralComman
         });
     }
 
-    @NotNull
     @Override
-    public String description(@NotNull CommandSender sender) {
-        return "Toggle whether an scoreboard will be saved to a file.";
+    public ComponentLike description(CommandSourceStack source) {
+        return Component.text("Toggle whether an scoreboard will be saved to a file.");
     }
 
-    @NotNull
     @Override
     public String name() {
         return "toggleSave";
     }
 
-    @NotNull
     @Override
-    public String usage(@NotNull CommandSender sender) {
-        return "/scoreboard toggleSave <scoreboard>";
+    public ComponentLike usage(CommandSourceStack source) {
+        return Component.text("/scoreboard toggleSave <scoreboard>");
     }
 }

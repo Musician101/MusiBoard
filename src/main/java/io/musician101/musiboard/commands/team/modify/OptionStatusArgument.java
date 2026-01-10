@@ -1,21 +1,20 @@
 package io.musician101.musiboard.commands.team.modify;
 
 import com.mojang.brigadier.arguments.ArgumentType;
-import io.musician101.bukkitier.command.ArgumentCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.EnumArgumentType;
+import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import org.bukkit.scoreboard.Team.OptionStatus;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
-public abstract class OptionStatusArgument extends MusiBoardCommand implements ArgumentCommand<OptionStatus> {
+@NullMarked
+public abstract class OptionStatusArgument extends MBCommand implements PaperArgumentCommand.AdventureFormat<OptionStatus> {
 
-    @NotNull
     @Override
     public String name() {
         return "status";
     }
 
-    @NotNull
     @Override
     public ArgumentType<OptionStatus> type() {
         return new EnumArgumentType<>(o -> o.toString().toLowerCase(), OptionStatus.values());

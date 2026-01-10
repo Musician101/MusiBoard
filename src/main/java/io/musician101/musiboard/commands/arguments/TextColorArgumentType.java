@@ -7,15 +7,16 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.concurrent.CompletableFuture;
 
+@NullMarked
 public class TextColorArgumentType implements ArgumentType<NamedTextColor> {
 
-    public static NamedTextColor getColor(@NotNull CommandContext<CommandSender> context) {
+    public static NamedTextColor getColor(CommandContext<CommandSourceStack> context) {
         return context.getArgument("color", NamedTextColor.class);
     }
 

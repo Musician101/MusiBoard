@@ -3,42 +3,43 @@ package io.musician101.musiboard.commands.players.display;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.musician101.bukkitier.command.ArgumentCommand;
-import io.musician101.bukkitier.command.Command;
-import io.musician101.bukkitier.command.LiteralCommand;
-import io.musician101.musiboard.commands.MusiBoardCommand;
+import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.commands.arguments.ComponentArgumentType;
 import io.musician101.musiboard.commands.players.TargetArgument;
+import io.musician101.musicommand.core.command.CommandException;
+import io.musician101.musicommand.paper.command.PaperArgumentCommand;
+import io.musician101.musicommand.paper.command.PaperCommand;
+import io.musician101.musicommand.paper.command.PaperLiteralCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
-import org.bukkit.command.CommandSender;
+import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
-public class NameCommand extends MusiBoardCommand implements LiteralCommand {
+@NullMarked
+public class NameCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
-    @NotNull
     @Override
-    public List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
         return List.of(new TargetArgument() {
 
             @Override
-            public @NotNull List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
+            public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
                 return List.of(new ObjectiveArgument() {
 
                     @Override
-                    public @NotNull List<Command<? extends ArgumentBuilder<CommandSender, ?>>> arguments() {
-                        return List.of(new ArgumentCommand<Component>() {
+                    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
+                        return List.of(new PaperArgumentCommand.AdventureFormat<Component>() {
 
                             @Override
-                            public int execute(@NotNull CommandContext<CommandSender> context) throws CommandSyntaxException {
+                            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                                 Objective objective = getObjective(context);
                                 Component component = ComponentArgumentType.get(context, name());
                                 getTargets(context).forEach(e -> {
@@ -49,13 +50,11 @@ public class NameCommand extends MusiBoardCommand implements LiteralCommand {
                                 return 1;
                             }
 
-                            @NotNull
                             @Override
                             public String name() {
                                 return "display";
                             }
 
-                            @NotNull
                             @Override
                             public ArgumentType<Component> type() {
                                 return new ComponentArgumentType();
@@ -67,7 +66,6 @@ public class NameCommand extends MusiBoardCommand implements LiteralCommand {
         });
     }
 
-    @NotNull
     @Override
     public String name() {
         return "name";

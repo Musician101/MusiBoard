@@ -7,28 +7,26 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+@NullMarked
 public class EnumArgumentType<E extends Enum<E>> implements ArgumentType<E> {
 
-    @NotNull
     private final Function<E, String> toString;
-    @NotNull
     private final E[] values;
 
     @SafeVarargs
-    public EnumArgumentType(@NotNull Function<E, String> toString, @NotNull E... values) {
+    public EnumArgumentType(Function<E, String> toString, E... values) {
         this.toString = toString;
         this.values = values;
     }
 
-    @NotNull
-    public static <E> E get(@NotNull CommandContext<CommandSender> context, @NotNull String name, @NotNull Class<E> clazz) {
+    public static <E> E get(CommandContext<CommandSourceStack> context, String name, Class<E> clazz) {
         return context.getArgument(name, clazz);
     }
 
