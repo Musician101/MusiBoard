@@ -16,8 +16,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 import static io.musician101.musiboard.MusiBoard.getManager;
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 @NullMarked
 class DeleteCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {

@@ -18,9 +18,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class PrefixCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
