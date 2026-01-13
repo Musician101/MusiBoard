@@ -23,9 +23,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 class SetDisplayCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -82,12 +79,12 @@ class SetDisplayCommand extends MBCommand implements PaperLiteralCommand.Adventu
             // The way this is handled by Paper results in non-vanilla like behavior
             // Objectives can only be in one display slot and clearing one display slot will clear all of them, if they're the same objective
             scoreboard.clearSlot(slot);
-            sendMessage(player, text("Display slot cleared.", GREEN));
+            sendMessage(player, "<green><mb-prefix>Display slot cleared.");
             return;
         }
 
         objective.setDisplaySlot(slot);
-        sendMessage(player, text("Display slot set.", GREEN));
+        sendMessage(player, "<green><mb-prefix>Display slot set.");
     }
 
     @Override

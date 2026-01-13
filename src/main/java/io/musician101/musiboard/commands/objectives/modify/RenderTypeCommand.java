@@ -15,9 +15,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class RenderTypeCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -26,7 +23,7 @@ public class RenderTypeCommand extends MBCommand implements PaperLiteralCommand.
         return enumCommands(RenderType.values(), (context, renderType) -> {
             Objective objective = ObjectiveArgumentType.get(context, "objective");
             objective.setRenderType(renderType);
-            sendMessage(context, text("Render type updated successfully.", GREEN));
+            sendMessage(context, "<green><mb-prefix>Render type updated successfully.");
             return 1;
         });
     }
@@ -35,7 +32,8 @@ public class RenderTypeCommand extends MBCommand implements PaperLiteralCommand.
     public String name() {
         return "renderType";
     }
-
+    
+    //TODO remove
     private PaperLiteralCommand.AdventureFormat renderTypeCommand(RenderType renderType) {
         return new PaperLiteralCommand.AdventureFormat() {
 
@@ -43,7 +41,7 @@ public class RenderTypeCommand extends MBCommand implements PaperLiteralCommand.
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Objective objective = ObjectiveArgumentType.get(context, "objective");
                 objective.setRenderType(renderType);
-                sendMessage(context, text("Render type updated successfully.", GREEN));
+                sendMessage(context, "<green><mb-prefix>Render type updated successfully.");
                 return 1;
             }
 

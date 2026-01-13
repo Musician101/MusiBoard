@@ -13,8 +13,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-
 @NullMarked
 public class NameTagVisibilityCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -23,7 +21,7 @@ public class NameTagVisibilityCommand extends MBCommand implements PaperLiteralC
         return OptionStatusArgument.get(((context, optionStatus) -> {
             Team team = TeamArgumentType.get(context);
             team.setOption(Option.NAME_TAG_VISIBILITY, optionStatus);
-            sendMessage(context, text("Name tag visibility updated successfully."));
+            sendMessage(context, "<green><mb-prefix>Name tag visibility updated successfully.");
             return 1;
         }));
     }

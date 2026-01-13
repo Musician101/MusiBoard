@@ -16,8 +16,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 import static io.musician101.musiboard.MusiBoard.getManager;
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 @NullMarked
 class SetCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -31,7 +29,7 @@ class SetCommand extends MBCommand implements PaperLiteralCommand.AdventureForma
                 MusiScoreboard scoreboard = getScoreboard(context);
                 Player player = getPlayer(context);
                 getManager().setScoreboard(player, scoreboard);
-                sendMessage(player, text("Scoreboard set successfully.", GREEN));
+                sendMessage(player, "<green><mb-prefix>Scoreboard set successfully.");
                 return 1;
             }
         });

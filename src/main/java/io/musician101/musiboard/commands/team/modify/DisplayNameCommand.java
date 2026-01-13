@@ -2,6 +2,7 @@ package io.musician101.musiboard.commands.team.modify;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.commands.DisplayNameArgument;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
@@ -16,9 +17,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class DisplayNameCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -31,7 +29,7 @@ public class DisplayNameCommand extends MBCommand implements PaperLiteralCommand
                 Component displayName = get(context);
                 Team team = TeamArgumentType.get(context);
                 team.displayName(displayName);
-                sendMessage(context, text("Team display name updated to ", GREEN), team.displayName());
+                sendMessage(context, "<green><mb-prefix> Team display name updated to <team>", Messages.teamResolver(team));
                 return 1;
             }
         });

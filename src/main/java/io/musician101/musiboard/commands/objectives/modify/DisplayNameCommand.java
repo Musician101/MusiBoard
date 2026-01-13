@@ -16,9 +16,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class DisplayNameCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -31,7 +28,7 @@ public class DisplayNameCommand extends MBCommand implements PaperLiteralCommand
                 Objective objective = ObjectiveArgumentType.get(context, "objective");
                 Component displayName = get(context);
                 objective.displayName(displayName);
-                sendMessage(context, text("Display name updated successfully.", GREEN));
+                sendMessage(context, "<green><mb-prefix>Display name updated successfully.");
                 return 1;
             }
         });

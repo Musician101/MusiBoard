@@ -6,9 +6,9 @@ import io.musician101.musicommand.paper.command.PaperLiteralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jspecify.annotations.NullMarked;
-
-import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 @NullMarked
 public class EnableCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -21,7 +21,7 @@ public class EnableCommand extends MBCommand implements PaperLiteralCommand.Adve
     @Override
     public Integer execute(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
-        sendMessage(source.getSender(), description(source).asComponent().color(RED));
+        sendMessage(context, "<red><mb-prefix> <description>", TagResolver.resolver("description", Tag.selfClosingInserting(description(source))));
         return 1;
     }
 

@@ -4,6 +4,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
@@ -19,9 +20,6 @@ import org.bukkit.scoreboard.Objective;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
-
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 @NullMarked
 public class SetCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -45,7 +43,8 @@ public class SetCommand extends MBCommand implements PaperLiteralCommand.Adventu
                                 List<Entity> entities = getTargets(context);
                                 entities.forEach(entity -> objective.getScoreFor(entity).setScore(s));
                                 int size = entities.size();
-                                sendMessage(context, text("Set ", GREEN), objective.displayName(), text(" for " + size + " entit" + (size == 1 ? "y" : "ies") + " to " + s + ".", GREEN));
+                                String message = "<green><mb-prefix> Set <objective><green> for " + size + " entit" + (size == 1 ? "y" : "ies") + " to " + s + ".";
+                                sendMessage(context, message, Messages.objectiveResolver(objective));
                                 return 1;
                             }
 

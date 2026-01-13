@@ -32,7 +32,7 @@ public class ColorCommand extends MBCommand implements PaperLiteralCommand.Adven
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Team team = TeamArgumentType.get(context);
                 team.color(context.getArgument(name(), NamedTextColor.class));
-                sendMessage(context, text("Team color updated.", GREEN));
+                sendMessage(context, "<green><mb-prefix>Team color updated.");
                 return 1;
             }
 

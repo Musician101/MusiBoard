@@ -24,7 +24,7 @@ public class DeathMessageVisibilityCommand extends MBCommand implements PaperLit
         return OptionStatusArgument.get(((context, optionStatus) -> {
             Team team = TeamArgumentType.get(context);
             team.setOption(Option.DEATH_MESSAGE_VISIBILITY, optionStatus);
-            sendMessage(context, text("Death message visibility updated.", GREEN));
+            sendMessage(context, "<green><mb-prefix>Death message visibility updated.");
             return 1;
         }));
     }

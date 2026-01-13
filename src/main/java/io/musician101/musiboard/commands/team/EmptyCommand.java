@@ -2,6 +2,7 @@ package io.musician101.musiboard.commands.team;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import io.musician101.musicommand.core.command.CommandException;
@@ -15,9 +16,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class EmptyCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -29,7 +27,7 @@ public class EmptyCommand extends MBCommand implements PaperLiteralCommand.Adven
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Team team = TeamArgumentType.get(context);
                 team.removeEntries(team.getEntries());
-                sendMessage(context, text("Removed all members from ", GREEN), team.displayName());
+                sendMessage(context, "<green><mb-prefix> Removed all members from <team>", Messages.teamResolver(team));
                 return 1;
             }
         });

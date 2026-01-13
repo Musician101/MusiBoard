@@ -31,7 +31,7 @@ class DeleteCommand extends MBCommand implements PaperLiteralCommand.AdventureFo
                 MusiScoreboard scoreboard = getScoreboard(context);
                 Bukkit.getOnlinePlayers().stream().filter(scoreboard::hasPlayer).forEach(player -> getManager().setScoreboard(player, getManager().getDefaultScoreboardOrVanilla()));
                 getManager().getScoreboards().remove(scoreboard);
-                sendMessage(context, text("Scoreboard deleted successfully", GREEN));
+                sendMessage(context, "<green><mb-prefix>Scoreboard deleted successfully");
                 return 1;
             }
         });

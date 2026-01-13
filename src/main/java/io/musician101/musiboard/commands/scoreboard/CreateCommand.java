@@ -17,9 +17,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 import static io.musician101.musiboard.MusiBoard.getManager;
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 @NullMarked
 class CreateCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -34,10 +31,10 @@ class CreateCommand extends MBCommand implements PaperLiteralCommand.AdventureFo
                 boolean success = getManager().registerNewScoreboard(name);
                 CommandSender sender = context.getSource().getSender();
                 if (success) {
-                    sendMessage(sender, text(name + " created successfully.", GREEN));
+                    sendMessage(sender, "<green><mb-prefix> " + name + " created successfully.");
                 }
                 else {
-                    sendMessage(sender, text(name + " already exists.", RED));
+                    sendMessage(sender, "<red><mb-prefix> " + name + " already exists.");
                 }
 
                 return 1;

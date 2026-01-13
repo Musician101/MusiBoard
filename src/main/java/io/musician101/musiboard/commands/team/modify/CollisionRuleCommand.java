@@ -24,7 +24,7 @@ public class CollisionRuleCommand extends MBCommand implements PaperLiteralComma
         return OptionStatusArgument.get(((context, optionStatus) -> {
             Team team = TeamArgumentType.get(context);
             team.setOption(Option.COLLISION_RULE, optionStatus);
-            sendMessage(context, text("Collision rule updated successfully.", GREEN));
+            sendMessage(context, "<green><mb-prefix>Collision rule updated successfully.");
             return 1;
         }));
     }

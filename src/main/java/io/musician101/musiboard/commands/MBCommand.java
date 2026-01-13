@@ -3,25 +3,24 @@ package io.musician101.musiboard.commands;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.CheckedBiFunction;
+import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
-import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static io.musician101.musiboard.Messages.PREFIX;
 import static io.musician101.musiboard.MusiBoard.getManager;
 
 @NullMarked
@@ -39,16 +38,14 @@ public abstract class MBCommand {
         return getManager().getScoreboard(player);
     }
 
-    public void sendMessage(Audience audience, ComponentLike... components) {
-        List<Component> list = new ArrayList<>();
-        list.add(PREFIX);
-        Arrays.stream(components).map(ComponentLike::asComponent).forEach(list::add);
-        Component message = Component.join(JoinConfiguration.noSeparators(), list);
-        audience.sendMessage(message);
+    public void sendMessage(Audience audience, String text, TagResolver... resolvers) {
+        List<TagResolver> resolverList = Arrays.asList(resolvers);
+        resolverList.add(Messages.PREFIX_RESOLVER);
+        audience.sendMessage(MiniMessage.miniMessage().deserialize(text, resolvers));
     }
 
-    public void sendMessage(CommandContext<CommandSourceStack> context, ComponentLike... components) {
-        sendMessage(context.getSource().getSender(), components);
+    public void sendMessage(CommandContext<CommandSourceStack> context, String text, TagResolver... resolvers) {
+        sendMessage(context.getSource().getSender(), text, resolvers);
     }
 
     public static <E extends Enum<E>> List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> enumCommands(E[] values, CheckedBiFunction<CommandContext<CommandSourceStack>, E, Integer, CommandException> executor) {

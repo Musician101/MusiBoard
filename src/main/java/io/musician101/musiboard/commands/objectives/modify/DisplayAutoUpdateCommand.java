@@ -18,8 +18,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 import static io.musician101.musiboard.MusiBoard.getPlugin;
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 @NullMarked
 public class DisplayAutoUpdateCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -32,7 +30,7 @@ public class DisplayAutoUpdateCommand extends MBCommand implements PaperLiteralC
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Objective objective = ObjectiveArgumentType.get(context, "objective");
                 objective.setAutoUpdateDisplay(BoolArgumentType.getBool(context, name()));
-                sendMessage(context, text("AutoDisplayUpdate has been updated.", GREEN));
+                sendMessage(context, "<green><mb-prefix>AutoDisplayUpdate has been updated.");
                 return 1;
             }
 

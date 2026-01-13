@@ -2,6 +2,7 @@ package io.musician101.musiboard.commands.team;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import io.musician101.musiboard.commands.players.TargetArgument;
@@ -17,9 +18,6 @@ import org.bukkit.scoreboard.Team;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
-
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 @NullMarked
 public class JoinCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -37,7 +35,7 @@ public class JoinCommand extends MBCommand implements PaperLiteralCommand.Advent
                         Team team = TeamArgumentType.get(context);
                         List<Entity> targets = getTargets(context, name());
                         team.addEntities(targets);
-                        sendMessage(context, text("Added " + targets.size() + " member(s) to ", GREEN), team.displayName());
+                        sendMessage(context, "<green><mb-prefix> Added " + targets.size() + " member(s) to <team>", Messages.teamResolver(team));
                         return 1;
                     }
 
@@ -53,7 +51,7 @@ public class JoinCommand extends MBCommand implements PaperLiteralCommand.Advent
                 Team team = TeamArgumentType.get(context);
                 Player player = getPlayer(context);
                 team.addEntity(player);
-                sendMessage(player, text("You have joined ", GREEN), team.displayName());
+                sendMessage(player, "<green><mb-prefix> You have joined <team>", Messages.teamResolver(team));
                 return 1;
             }
         });

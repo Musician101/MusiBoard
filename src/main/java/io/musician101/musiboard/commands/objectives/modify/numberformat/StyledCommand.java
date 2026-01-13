@@ -19,9 +19,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class StyledCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -34,7 +31,7 @@ public class StyledCommand extends MBCommand implements PaperLiteralCommand.Adve
                 Objective objective = ObjectiveArgumentType.get(context, "objective");
                 Style contents = context.getArgument(name(), Style.class);
                 objective.numberFormat(NumberFormat.styled(contents));
-                sendMessage(context, text("Style format updated successfully.", GREEN));
+                sendMessage(context, "<green><mb-prefix> Style format updated successfully.");
                 return 1;
             }
 

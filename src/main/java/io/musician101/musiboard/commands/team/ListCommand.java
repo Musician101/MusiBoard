@@ -12,6 +12,8 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 import org.jspecify.annotations.NullMarked;
@@ -38,7 +40,9 @@ public class ListCommand extends MBCommand implements PaperLiteralCommand.Advent
                 Set<String> entries = team.getEntries();
                 int size = entries.size();
                 Component entriesComponent = join(JoinConfiguration.separator(text(", ", GRAY)), entries.stream().map(e -> text(e, GREEN)).toList());
-                sendMessage(player, team.displayName(), text(" has " + size + " member(s)" + (size > 0 ? ": " : ""), GREEN), entriesComponent);
+                TagResolver resolver = TagResolver.resolver("entries", Tag.selfClosingInserting(entriesComponent));
+                String message = "<green><mb-prefix> <team><green> has " + size + " member(s)" + (size > 0 ? ": <entries>" : "");
+                sendMessage(player, message, resolver);
                 return 1;
             }
         });
@@ -56,7 +60,8 @@ public class ListCommand extends MBCommand implements PaperLiteralCommand.Advent
         Set<Team> teams = scoreboard.getTeams();
         int size = teams.size();
         Component teamsComponent = join(JoinConfiguration.separator(text(", ", GRAY)), teams.stream().map(Team::displayName).toList());
-        sendMessage(player, text("There are " + size + " team(s)" + (size > 0 ? ": " : ""), GREEN), teamsComponent);
+        TagResolver resolver = TagResolver.resolver("teams", Tag.selfClosingInserting(teamsComponent));
+        sendMessage(player, "<green><mb-prefix> There are " + size + " team(s)" + (size > 0 ? ": <teams>" : ""), resolver);
         return 1;
     }
 

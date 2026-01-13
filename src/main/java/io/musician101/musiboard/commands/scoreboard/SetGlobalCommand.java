@@ -17,8 +17,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 import static io.musician101.musiboard.MusiBoard.getManager;
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 @NullMarked
 class SetGlobalCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -32,7 +30,7 @@ class SetGlobalCommand extends MBCommand implements PaperLiteralCommand.Adventur
                 MusiScoreboard scoreboard = getScoreboard(context);
                 Player player = getPlayer(context);
                 Bukkit.getOnlinePlayers().forEach(p -> getManager().setScoreboard(p, scoreboard));
-                sendMessage(player, text("Scoreboard globally set successfully.", GREEN));
+                sendMessage(player, "<green><mb-prefix>Scoreboard globally set successfully.");
                 return 1;
             }
         });

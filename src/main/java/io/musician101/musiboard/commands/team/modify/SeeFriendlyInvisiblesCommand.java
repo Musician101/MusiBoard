@@ -28,6 +28,7 @@ public class SeeFriendlyInvisiblesCommand extends MBCommand implements PaperLite
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Team team = TeamArgumentType.get(context);
                 team.setCanSeeFriendlyInvisibles(BoolArgumentType.getBool(context, name()));
+                sendMessage(context, "<green><mb-prefix> Setting updated successfully.");
                 return 1;
             }
 

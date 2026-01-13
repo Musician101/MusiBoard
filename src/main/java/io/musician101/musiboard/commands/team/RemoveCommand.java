@@ -15,9 +15,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class RemoveCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -29,7 +26,7 @@ public class RemoveCommand extends MBCommand implements PaperLiteralCommand.Adve
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Player player = getPlayer(context);
                 TeamArgumentType.get(context).unregister();
-                sendMessage(player, text("Team deleted.", GREEN));
+                sendMessage(player, "<green><mb-prefix>Team deleted.");
                 return 1;
             }
         });

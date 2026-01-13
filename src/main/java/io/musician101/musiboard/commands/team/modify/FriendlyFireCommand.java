@@ -31,7 +31,7 @@ public class FriendlyFireCommand extends MBCommand implements PaperLiteralComman
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Team team = TeamArgumentType.get(context);
                 team.setAllowFriendlyFire(BoolArgumentType.getBool(context, name()));
-                sendMessage(context, text("Allow friendly fire updated.", GREEN));
+                sendMessage(context, "<green><mb-prefix>Allow friendly fire updated.");
                 return 1;
             }
 

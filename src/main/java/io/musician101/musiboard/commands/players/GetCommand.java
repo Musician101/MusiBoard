@@ -2,6 +2,7 @@ package io.musician101.musiboard.commands.players;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
@@ -18,10 +19,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 import java.util.Optional;
-
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 @NullMarked
 public class GetCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -40,13 +37,13 @@ public class GetCommand extends MBCommand implements PaperLiteralCommand.Adventu
                         Objective objective = ObjectiveArgumentType.get(context, name());
                         Player player = getPlayer(context);
                         if (optional.isEmpty()) {
-                            sendMessage(player, text("No target found.", RED));
+                            sendMessage(player, "<red><mb-prefix>No target found.");
                             return 1;
                         }
 
                         Entity entity = optional.get();
                         int score = objective.getScoreFor(entity).getScore();
-                        sendMessage(player, entity.name(), text(" has " + score + " ", GREEN), objective.displayName());
+                        sendMessage(player, "<green><mb-prefix> " + entity.name() + " has " + score + " <objective>", Messages.objectiveResolver(objective));
                         return 1;
                     }
                 });

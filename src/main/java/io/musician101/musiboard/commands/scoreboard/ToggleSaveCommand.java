@@ -15,9 +15,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class ToggleSaveCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -31,7 +28,7 @@ public class ToggleSaveCommand extends MBCommand implements PaperLiteralCommand.
                 MusiScoreboard scoreboard = getScoreboard(context);
                 boolean save = !scoreboard.saveData();
                 scoreboard.saveData(save);
-                sendMessage(player, text("Scoreboard save " + (save ? "en" : "dis") + "abled.", GREEN));
+                sendMessage(player, "<green><prefix> Scoreboard save " + (save ? "en" : "dis") + "abled.");
                 return 1;
             }
         });

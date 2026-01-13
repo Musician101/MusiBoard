@@ -21,7 +21,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 @NullMarked
 public class AddCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -70,7 +69,7 @@ public class AddCommand extends MBCommand implements PaperLiteralCommand.Adventu
 
         Team team = scoreboard.registerNewTeam(name);
         team.displayName(displayName);
-        sendMessage(player, text("Team created successfully.", GREEN));
+        sendMessage(player, "<green><mb-prefix>Team created successfully.");
     }
 
     @Override

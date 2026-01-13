@@ -16,9 +16,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 class RemoveCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -30,7 +27,7 @@ class RemoveCommand extends MBCommand implements PaperLiteralCommand.AdventureFo
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Objective objective = ObjectiveArgumentType.get(context, name());
                 objective.unregister();
-                sendMessage(context, text("Objective removed.", GREEN));
+                sendMessage(context, "<green><mb-prefix>Objective removed.");
                 return 1;
             }
         });

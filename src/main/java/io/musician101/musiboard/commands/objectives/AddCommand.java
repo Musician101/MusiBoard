@@ -14,6 +14,8 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Criteria;
 import org.jspecify.annotations.NullMarked;
@@ -21,8 +23,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 @NullMarked
 class AddCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -96,13 +96,14 @@ class AddCommand extends MBCommand implements PaperLiteralCommand.AdventureForma
 
     private void registerObjective(Player player, String name, Criteria criteria, Component displayName) {
         MusiScoreboard scoreboard = getScoreboard(player);
+        TagResolver objectiveResolver = TagResolver.resolver("objective", Tag.selfClosingInserting(displayName));
         if (scoreboard.getObjective(name) == null) {
             scoreboard.registerNewObjective(name, criteria, displayName);
-            sendMessage(player, text("Objective ", GREEN), displayName, text(" registered.", GREEN));
+            sendMessage(player, "<green><mb-prefix>Objective <objective> <green>registered.", objectiveResolver);
             return;
         }
 
-        sendMessage(player, text("Objective ", RED), displayName, text(" already exists.", RED));
+        sendMessage(player, "<red><mb-prefix>Objective <objective> already exists.", objectiveResolver);
     }
 
     @Override

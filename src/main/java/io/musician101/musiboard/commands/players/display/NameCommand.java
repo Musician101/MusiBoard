@@ -21,9 +21,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class NameCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -47,7 +44,7 @@ public class NameCommand extends MBCommand implements PaperLiteralCommand.Advent
                                     Score score = objective.getScoreFor(e);
                                     score.customName(component);
                                 });
-                                sendMessage(context, text("Custom player names updated for targets.", GREEN));
+                                sendMessage(context, "<green><mb-prefix>Custom player names updated for targets.");
                                 return 1;
                             }
 

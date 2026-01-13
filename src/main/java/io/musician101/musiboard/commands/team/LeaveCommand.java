@@ -16,9 +16,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class LeaveCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -32,7 +29,7 @@ public class LeaveCommand extends MBCommand implements PaperLiteralCommand.Adven
                 Player player = getPlayer(context);
                 MusiScoreboard scoreboard = getScoreboard(player);
                 scoreboard.getTeams().forEach(team -> targets.forEach(team::removeEntity));
-                sendMessage(player, text("Removed " + targets.size() + " member(s) from team(s).", GREEN));
+                sendMessage(player, "<green><mb-prefix>Removed " + targets.size() + " member(s) from team(s).");
                 return 1;
             }
 

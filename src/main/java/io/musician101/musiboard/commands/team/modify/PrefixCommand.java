@@ -32,7 +32,7 @@ public class PrefixCommand extends MBCommand implements PaperLiteralCommand.Adve
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Team team = TeamArgumentType.get(context);
                 team.prefix(context.getArgument(name(), Component.class));
-                sendMessage(context, text("Prefix updated successfully.", GREEN));
+                sendMessage(context, "<green><mb-prefix>Prefix updated successfully.");
                 return 1;
             }
 

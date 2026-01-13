@@ -4,6 +4,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
@@ -21,10 +22,6 @@ import org.bukkit.scoreboard.Score;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
-
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 @NullMarked
 public class AddCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -48,7 +45,7 @@ public class AddCommand extends MBCommand implements PaperLiteralCommand.Adventu
                                 List<Entity> entities = getTargets(context);
                                 int score = IntegerArgumentType.getInteger(context, name());
                                 if (entities.isEmpty()) {
-                                    sendMessage(player, text("No targets found.", RED));
+                                    sendMessage(player, "<red><mb-prefix>No targets found.");
                                     return 1;
                                 }
 
@@ -57,7 +54,7 @@ public class AddCommand extends MBCommand implements PaperLiteralCommand.Adventu
                                     s.setScore(s.getScore() + score);
                                 });
 
-                                sendMessage(player, text("Added " + score + " to ", GREEN), objective.displayName(), text(" for " + entities.size() + " entit" + (entities.size() == 1 ? "y" : "ies") + "."));
+                                sendMessage(player, "<green><mb-prefix>Added " + score + " to <objective>" + " for " + entities.size() + " entit" + (entities.size() == 1 ? "y" : "ies") + ".", Messages.objectiveResolver(objective));
                                 return 1;
                             }
 

@@ -18,9 +18,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class ResetCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -37,7 +34,7 @@ public class ResetCommand extends MBCommand implements PaperLiteralCommand.Adven
                         Player player = getPlayer(context);
                         Objective objective = ObjectiveArgumentType.get(context, name());
                         getTargets(context).forEach(entity -> objective.getScoreFor(entity).resetScore());
-                        sendMessage(player, text("Scores reset.", GREEN));
+                        sendMessage(player, "<green><mb-prefix>Scores reset.");
                         return 1;
                     }
                 });
@@ -48,7 +45,7 @@ public class ResetCommand extends MBCommand implements PaperLiteralCommand.Adven
                 Player player = getPlayer(context);
                 MusiScoreboard scoreboard = getScoreboard(player);
                 getTargets(context).forEach(entity -> scoreboard.resetScores(entity.getName()));
-                sendMessage(player, text("Scores reset.", GREEN));
+                sendMessage(player, "<green><mb-prefix>Scores reset.");
                 return 1;
             }
         });

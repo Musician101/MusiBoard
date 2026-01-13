@@ -4,6 +4,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
@@ -21,9 +22,6 @@ import org.bukkit.scoreboard.Score;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
-
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 @NullMarked
 public class RemoveCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -52,7 +50,8 @@ public class RemoveCommand extends MBCommand implements PaperLiteralCommand.Adve
                                 });
 
                                 int size = entities.size();
-                                sendMessage(player, text("Removed " + s + " from ", GREEN), objective.displayName(), text(" for " + size + " entit" + (size == 1 ? "y" : "ies") + ".", GREEN));
+                                String message = "<green><mb-prefix>Removed " + s + " from <objective><green> for " + size + " entit" + (size == 1 ? "y" : "ies") + ".";
+                                sendMessage(player, message, Messages.objectiveResolver(objective));
                                 return 1;
                             }
 

@@ -18,9 +18,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class ToggleSaveCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -35,11 +32,11 @@ public class ToggleSaveCommand extends MBCommand implements PaperLiteralCommand.
                 Objective objective = ObjectiveArgumentType.get(context, name());
                 if (scoreboard.isObjectiveSaveDisabled(objective)) {
                     scoreboard.enableObjectiveSave(objective);
-                    sendMessage(player, text("Objective save enabled.", GREEN));
+                    sendMessage(player, "<green><mb-prefix>Objective save enabled.");
                 }
                 else {
                     scoreboard.disableObjectiveSave(objective);
-                    sendMessage(player, text("Objective save disabled.", GREEN));
+                    sendMessage(player, "<green><mb-prefix>Objective save disabled.");
                 }
 
                 return 1;

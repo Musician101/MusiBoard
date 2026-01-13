@@ -2,6 +2,7 @@ package io.musician101.musiboard.commands.players;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musicommand.paper.command.PaperCommand;
@@ -10,6 +11,8 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.JoinConfiguration;
+import net.kyori.adventure.text.minimessage.tag.Tag;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Score;
 import org.jspecify.annotations.NullMarked;
@@ -17,11 +20,9 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 import java.util.Set;
 
-import static net.kyori.adventure.text.Component.join;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GRAY;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
 @NullMarked
 public class ListCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -37,19 +38,19 @@ public class ListCommand extends MBCommand implements PaperLiteralCommand.Advent
                 return getTarget(context).map(entity -> {
                     Set<Score> scores = scoreboard.getScores(entity.getName());
                     if (scores.isEmpty()) {
-                        sendMessage(player, text(entity.getName() + " has no scores to show.", GREEN));
+                        sendMessage(player, "<green><mb-prefix> " + entity.getName() + " has no scores to show.");
                     }
                     else {
-                        sendMessage(player, text(entity.getName() + " has " + scores.size() + " score(s): ", GREEN));
+                        sendMessage(player, "<green><prefix> " + entity.getName() + " has " + scores.size() + " score(s): ");
                         scores.forEach(score -> {
-                            Component message = Component.join(JoinConfiguration.noSeparators(), score.getObjective().displayName(), text(": " + score.getScore()));
-                            player.sendMessage(message);
+                            String message = "<objective: " + score.getScore();
+                            sendMessage(player, message, Messages.objectiveResolver(score.getObjective()));
                         });
                     }
 
                     return 1;
                 }).orElseGet(() -> {
-                    sendMessage(player, text("Provided target has no scores to show.", RED));
+                    sendMessage(player, "<red><mb-prefix>Provided target has no scores to show.");
                     return 1;
                 });
             }
@@ -66,12 +67,14 @@ public class ListCommand extends MBCommand implements PaperLiteralCommand.Advent
         Player player = getPlayer(context);
         Set<String> entries = getScoreboard(player).getEntries();
         if (entries.isEmpty()) {
-            sendMessage(player, text("There are no tracked entities.", GREEN));
+            sendMessage(player, "<green><mb-prefix>There are no tracked entities.");
         }
         else {
             int size = entries.size();
-            Component entriesList = join(JoinConfiguration.separator(text(", ", GRAY)), entries.stream().map(s -> text(s, GREEN)).toList());
-            sendMessage(player, text("There " + (size == 1 ? "is " : "are ") + size + " tracked entit" + (size == 1 ? "y" : "ies") + ":"), entriesList);
+            String message = "<mb-prefix> There " + (size == 1 ? "is " : "are ") + size + " tracked entit" + (size == 1 ? "y" : "ies") + ":<entries>";
+            Component entriesList = Component.join(JoinConfiguration.separator(text(", ", GRAY)), entries.stream().map(s -> text(s, GREEN)).toList());
+            TagResolver resolver = TagResolver.resolver("entries", Tag.selfClosingInserting(entriesList));
+            sendMessage(player, message, resolver);
         }
 
         return 1;

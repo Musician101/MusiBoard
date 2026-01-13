@@ -18,9 +18,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class SuffixCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -32,7 +29,7 @@ public class SuffixCommand extends MBCommand implements PaperLiteralCommand.Adve
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Team team = TeamArgumentType.get(context);
                 team.suffix(context.getArgument(name(), Component.class));
-                sendMessage(context, text("Prefix updated successfully.", GREEN));
+                sendMessage(context, "<green><mb-prefix>Suffix updated successfully.");
                 return 1;
             }
 
@@ -50,6 +47,6 @@ public class SuffixCommand extends MBCommand implements PaperLiteralCommand.Adve
 
     @Override
     public String name() {
-        return "prefix";
+        return "suffix";
     }
 }

@@ -19,9 +19,6 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
-
 @NullMarked
 public class FixedCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -34,7 +31,7 @@ public class FixedCommand extends MBCommand implements PaperLiteralCommand.Adven
                 Objective objective = ObjectiveArgumentType.get(context, "objective");
                 Component contents = context.getArgument(name(), Component.class);
                 objective.numberFormat(NumberFormat.fixed(contents));
-                sendMessage(context, text("Fixed format updated successfully.", GREEN));
+                sendMessage(context, "<green><mb-prefix>Fixed format updated successfully.");
                 return 1;
             }
 

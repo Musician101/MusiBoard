@@ -16,8 +16,6 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 import static io.musician101.musiboard.MusiBoard.getPlugin;
-import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 @NullMarked
 public class NumberFormatCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -30,7 +28,7 @@ public class NumberFormatCommand extends MBCommand implements PaperLiteralComman
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Objective objective = ObjectiveArgumentType.get(context, "objective");
                 objective.numberFormat(NumberFormat.blank());
-                sendMessage(context, text("NumberFormat updated to BLANK.", GREEN));
+                sendMessage(context, "<green><mb-prefix>NumberFormat updated to BLANK.");
                 return 1;
             }
 
