@@ -6,12 +6,12 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.DisplayNameArgument;
 import io.musician101.musiboard.commands.MBCommand;
-import io.musician101.musiboard.commands.arguments.CriteriaArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.entity.Player;
@@ -24,7 +24,6 @@ import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
 
-//TODO fix nullability annotations once MusiCommand gets fixed
 @NullMarked
 class AddCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
@@ -68,7 +67,7 @@ class AddCommand extends MBCommand implements PaperLiteralCommand.AdventureForma
 
                     @Override
                     public ArgumentType<Criteria> type() {
-                        return new CriteriaArgumentType();
+                        return ArgumentTypes.objectiveCriteria();
                     }
                 });
             }

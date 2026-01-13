@@ -19,7 +19,6 @@ import java.util.Set;
 
 import static net.kyori.adventure.text.Component.join;
 import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.Component.textOfChildren;
 import static net.kyori.adventure.text.format.NamedTextColor.GRAY;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 import static net.kyori.adventure.text.format.NamedTextColor.RED;
@@ -42,7 +41,10 @@ public class ListCommand extends MBCommand implements PaperLiteralCommand.Advent
                     }
                     else {
                         sendMessage(player, text(entity.getName() + " has " + scores.size() + " score(s): ", GREEN));
-                        scores.forEach(score -> player.sendMessage(textOfChildren(score.getObjective().displayName(), text(": " + score.getScore()))));
+                        scores.forEach(score -> {
+                            Component message = Component.join(JoinConfiguration.noSeparators(), score.getObjective().displayName(), text(": " + score.getScore()));
+                            player.sendMessage(message);
+                        });
                     }
 
                     return 1;

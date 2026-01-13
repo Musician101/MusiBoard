@@ -28,7 +28,7 @@ public class PlayersCommand extends MBCommand implements PaperLiteralCommand.Adv
 
     @Override
     public boolean canUse(CommandSourceStack source) {
-        return canEdit(source.getSender()) && source.getSender() instanceof Player;
+        return canEdit(source) && source.getSender() instanceof Player;
     }
 
     @Override

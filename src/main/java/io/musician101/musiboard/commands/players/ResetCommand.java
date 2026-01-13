@@ -4,6 +4,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
+import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperCommand;
@@ -34,7 +35,7 @@ public class ResetCommand extends MBCommand implements PaperLiteralCommand.Adven
                     @Override
                     public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                         Player player = getPlayer(context);
-                        Objective objective = getObjective(context);
+                        Objective objective = ObjectiveArgumentType.get(context, name());
                         getTargets(context).forEach(entity -> objective.getScoreFor(entity).resetScore());
                         sendMessage(player, text("Scores reset.", GREEN));
                         return 1;

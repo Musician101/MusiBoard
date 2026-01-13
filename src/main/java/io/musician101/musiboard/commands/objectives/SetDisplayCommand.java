@@ -5,7 +5,6 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
-import io.musician101.musiboard.commands.arguments.EnumArgumentType;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musicommand.core.command.CommandException;
@@ -13,6 +12,7 @@ import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.entity.Player;
@@ -50,7 +50,7 @@ class SetDisplayCommand extends MBCommand implements PaperLiteralCommand.Adventu
 
             @Override
             public Integer execute(CommandContext<CommandSourceStack> context) {
-                setDisplaySlot((Player) context.getSource(), EnumArgumentType.get(context, name(), DisplaySlot.class), null);
+                setDisplaySlot(getPlayer(context), context.getArgument(name(), DisplaySlot.class), null);
                 return 1;
             }
 
@@ -61,7 +61,7 @@ class SetDisplayCommand extends MBCommand implements PaperLiteralCommand.Adventu
 
             @Override
             public ArgumentType<DisplaySlot> type() {
-                return new EnumArgumentType<>(DisplaySlot::getId, DisplaySlot.values());
+                return ArgumentTypes.scoreboardDisplaySlot();
             }
         });
     }
@@ -79,8 +79,8 @@ class SetDisplayCommand extends MBCommand implements PaperLiteralCommand.Adventu
     private void setDisplaySlot(Player player, DisplaySlot slot, @Nullable Objective objective) {
         MusiScoreboard scoreboard = getScoreboard(player);
         if (objective == null) {
-            //TODO The way this is handled by Paper results in non-vanilla like behavior
-            //TODO Objectives can only be in one display slot and clearing one display slot will clear all of them, if they're the same objective
+            // The way this is handled by Paper results in non-vanilla like behavior
+            // Objectives can only be in one display slot and clearing one display slot will clear all of them, if they're the same objective
             scoreboard.clearSlot(slot);
             sendMessage(player, text("Display slot cleared.", GREEN));
             return;

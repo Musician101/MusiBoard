@@ -2,9 +2,9 @@ package io.musician101.musiboard.commands;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.musician101.musiboard.commands.arguments.ComponentArgumentType;
 import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
 import org.jspecify.annotations.NullMarked;
 
@@ -22,6 +22,6 @@ public abstract class DisplayNameArgument extends MBCommand implements PaperArgu
 
     @Override
     public ArgumentType<Component> type() {
-        return new ComponentArgumentType();
+        return ArgumentTypes.component();
     }
 }

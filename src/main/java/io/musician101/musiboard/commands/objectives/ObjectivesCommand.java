@@ -30,7 +30,7 @@ public class ObjectivesCommand extends MBCommand implements PaperLiteralCommand.
     @Override
     public boolean canUse(CommandSourceStack source) {
         CommandSender sender = source.getSender();
-        return canEdit(source.getSender()) && sender instanceof Player;
+        return canEdit(source) && sender instanceof Player;
     }
 
     @Override

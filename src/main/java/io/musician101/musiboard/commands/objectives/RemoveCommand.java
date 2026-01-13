@@ -4,6 +4,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
+import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
@@ -27,7 +28,7 @@ class RemoveCommand extends MBCommand implements PaperLiteralCommand.AdventureFo
 
             @Override
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
-                Objective objective = getObjective(context);
+                Objective objective = ObjectiveArgumentType.get(context, name());
                 objective.unregister();
                 sendMessage(context, text("Objective removed.", GREEN));
                 return 1;

@@ -5,6 +5,7 @@ import io.musician101.musiboard.commands.objectives.ObjectivesCommand;
 import io.musician101.musiboard.commands.players.PlayersCommand;
 import io.musician101.musiboard.commands.scoreboard.ScoreboardCommand;
 import io.musician101.musiboard.commands.team.TeamCommand;
+import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musiboard.scoreboard.MusiScoreboardManager;
 import io.musician101.musicommand.paper.PaperMusiCommand;
 import net.kyori.adventure.text.ComponentLike;
@@ -14,6 +15,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NullMarked;
+
+import java.util.Optional;
 
 @NullMarked
 public final class MusiBoard extends JavaPlugin implements Listener {
@@ -34,8 +37,20 @@ public final class MusiBoard extends JavaPlugin implements Listener {
         }
     }
 
-    public MusiScoreboardManager getManager() {
-        return manager;
+    public static MusiScoreboardManager getManager() {
+        return getPlugin().manager;
+    }
+
+    public static MusiScoreboard getScoreboard(Player player) {
+        return getPlugin().manager.getScoreboard(player);
+    }
+
+    public static Optional<MusiScoreboard> getScoreboard(String name) {
+        return getPlugin().manager.getScoreboard(name);
+    }
+
+    public static Optional<MusiScoreboard> getScoreboardOrDefault(String name) {
+        return getPlugin().manager.getScoreboardOrDefault(name);
     }
 
     @Override

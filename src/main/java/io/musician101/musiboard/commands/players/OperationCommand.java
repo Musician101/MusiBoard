@@ -5,8 +5,9 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
-import io.musician101.musiboard.commands.arguments.EnumArgumentType;
-import io.musician101.musiboard.commands.arguments.Operation;
+import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
+import io.musician101.musiboard.commands.arguments.OperationArgumentType;
+import io.musician101.musiboard.commands.arguments.OperationArgumentType.Operation;
 import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import io.musician101.musicommand.paper.command.PaperCommand;
@@ -33,7 +34,7 @@ public class OperationCommand extends MBCommand implements PaperLiteralCommand.A
 
             @Override
             public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-                return List.of(new TargetArgument() {
+                return List.of(new ObjectiveArgument() {
 
                     @Override
                     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
@@ -49,11 +50,11 @@ public class OperationCommand extends MBCommand implements PaperLiteralCommand.A
 
                                             @Override
                                             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
-                                                Objective targetObjective = getObjective(context, "targetObjective");
-                                                Objective sourceObjective = getObjective(context, "sourceObjective");
+                                                Objective targetObjective = ObjectiveArgumentType.get(context, "targetObjective");
+                                                Objective sourceObjective = ObjectiveArgumentType.get(context, "sourceObjective");
                                                 List<Entity> targets = getTargets(context, "targets");
                                                 List<Entity> sources = getTargets(context, "sources");
-                                                Operation operation = EnumArgumentType.get(context, "operation", Operation.class);
+                                                Operation operation = OperationArgumentType.get(context, "operation");
                                                 for (Entity target : targets) {
                                                     Score a = targetObjective.getScoreFor(target);
                                                     for (Entity source : sources) {
@@ -88,7 +89,7 @@ public class OperationCommand extends MBCommand implements PaperLiteralCommand.A
 
                             @Override
                             public ArgumentType<Operation> type() {
-                                return new EnumArgumentType<>(Operation::operator, Operation.values());
+                                return new OperationArgumentType();
                             }
                         });
                     }

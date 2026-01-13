@@ -6,6 +6,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
+import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import io.musician101.musicommand.paper.command.PaperCommand;
@@ -43,7 +44,7 @@ public class RemoveCommand extends MBCommand implements PaperLiteralCommand.Adve
                             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                                 List<Entity> entities = getTargets(context);
                                 Player player = getPlayer(context);
-                                Objective objective = getObjective(context);
+                                Objective objective = ObjectiveArgumentType.get(context, name());
                                 int s = IntegerArgumentType.getInteger(context, name());
                                 entities.forEach(entity -> {
                                     Score score = objective.getScoreFor(entity);

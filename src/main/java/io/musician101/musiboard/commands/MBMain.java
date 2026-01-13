@@ -11,6 +11,7 @@ import io.musician101.musicommand.paper.command.PaperLiteralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.JoinConfiguration;
 import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
@@ -18,7 +19,6 @@ import java.util.List;
 import static io.musician101.musiboard.Messages.PREFIX;
 import static io.musician101.musiboard.MusiBoard.getPlugin;
 import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.Component.textOfChildren;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 import static net.kyori.adventure.text.minimessage.MiniMessage.miniMessage;
 
@@ -54,7 +54,7 @@ public class MBMain extends MBCommand implements PaperLiteralCommand.AdventureFo
 
         @Override
         public boolean canUse(CommandSourceStack source) {
-            return canEdit(source.getSender());
+            return canEdit(source);
         }
 
         @Override
@@ -65,7 +65,8 @@ public class MBMain extends MBCommand implements PaperLiteralCommand.AdventureFo
         @Override
         public Integer execute(CommandContext<CommandSourceStack> context) {
             getPlugin().reload();
-            context.getSource().getSender().sendMessage(textOfChildren(PREFIX, text("Config reloaded.", GREEN)));
+            Component message = Component.join(JoinConfiguration.noSeparators(), PREFIX, text("Config reloaded.", GREEN));
+            context.getSource().getSender().sendMessage(message);
             return 1;
         }
 

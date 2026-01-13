@@ -15,6 +15,7 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
+import static io.musician101.musiboard.MusiBoard.getManager;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
@@ -38,7 +39,7 @@ class SetCommand extends MBCommand implements PaperLiteralCommand.AdventureForma
 
     @Override
     public boolean canUse(CommandSourceStack source) {
-        return canOverride(source.getSender());
+        return source.getSender().hasPermission("musiboard.override") && source instanceof Player;
     }
 
     @Override

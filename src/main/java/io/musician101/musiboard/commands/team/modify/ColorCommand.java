@@ -5,12 +5,12 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
-import io.musician101.musiboard.commands.arguments.TextColorArgumentType;
 import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.scoreboard.Team;
@@ -31,7 +31,7 @@ public class ColorCommand extends MBCommand implements PaperLiteralCommand.Adven
             @Override
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Team team = TeamArgumentType.get(context);
-                team.color(TextColorArgumentType.getColor(context));
+                team.color(context.getArgument(name(), NamedTextColor.class));
                 sendMessage(context, text("Team color updated.", GREEN));
                 return 1;
             }
@@ -43,7 +43,7 @@ public class ColorCommand extends MBCommand implements PaperLiteralCommand.Adven
 
             @Override
             public ArgumentType<NamedTextColor> type() {
-                return new TextColorArgumentType();
+                return ArgumentTypes.namedColor();
             }
         });
     }

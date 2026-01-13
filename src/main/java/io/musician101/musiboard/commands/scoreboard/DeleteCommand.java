@@ -15,6 +15,7 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
+import static io.musician101.musiboard.MusiBoard.getManager;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
@@ -38,7 +39,7 @@ class DeleteCommand extends MBCommand implements PaperLiteralCommand.AdventureFo
 
     @Override
     public boolean canUse(CommandSourceStack source) {
-        return canEdit(source.getSender());
+        return canEdit(source);
     }
 
     @Override

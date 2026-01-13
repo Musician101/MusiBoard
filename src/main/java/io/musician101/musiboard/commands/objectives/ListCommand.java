@@ -15,7 +15,6 @@ import java.util.Set;
 
 import static net.kyori.adventure.text.Component.join;
 import static net.kyori.adventure.text.Component.text;
-import static net.kyori.adventure.text.Component.textOfChildren;
 
 @NullMarked
 class ListCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
@@ -29,7 +28,7 @@ class ListCommand extends MBCommand implements PaperLiteralCommand.AdventureForm
     public Integer execute(CommandContext<CommandSourceStack> context) {
         Player player = getPlayer(context);
         Set<Objective> objectives = getScoreboard(player).getObjectives();
-        Component joined = textOfChildren(text(objectives.isEmpty() ? "" : ":"), join(JoinConfiguration.commas(true), objectives.stream().map(Objective::displayName).toList()));
+        Component joined = join(JoinConfiguration.noSeparators(), text(objectives.isEmpty() ? "" : ":"), join(JoinConfiguration.commas(true), objectives.stream().map(Objective::displayName).toList()));
         Component first = text("There are " + objectives.size() + " objective" + (objectives.size() == 1 ? "" : "s"));
         sendMessage(player, first, joined);
         return 1;

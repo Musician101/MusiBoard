@@ -5,13 +5,14 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
-import io.musician101.musiboard.commands.arguments.ComponentArgumentType;
+import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import io.musician101.musiboard.commands.players.TargetArgument;
 import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.scoreboard.Objective;
@@ -40,8 +41,8 @@ public class NameCommand extends MBCommand implements PaperLiteralCommand.Advent
 
                             @Override
                             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
-                                Objective objective = getObjective(context);
-                                Component component = ComponentArgumentType.get(context, name());
+                                Objective objective = ObjectiveArgumentType.get(context, name());
+                                Component component = context.getArgument(name(), Component.class);
                                 getTargets(context).forEach(e -> {
                                     Score score = objective.getScoreFor(e);
                                     score.customName(component);
@@ -57,7 +58,7 @@ public class NameCommand extends MBCommand implements PaperLiteralCommand.Advent
 
                             @Override
                             public ArgumentType<Component> type() {
-                                return new ComponentArgumentType();
+                                return ArgumentTypes.component();
                             }
                         });
                     }

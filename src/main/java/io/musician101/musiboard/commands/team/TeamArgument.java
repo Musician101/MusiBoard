@@ -3,12 +3,12 @@ package io.musician101.musiboard.commands.team;
 import com.mojang.brigadier.arguments.ArgumentType;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
-import io.musician101.musiboard.commands.arguments.TeamArgumentType.TeamValue;
 import io.musician101.musicommand.paper.command.PaperArgumentCommand;
+import org.bukkit.scoreboard.Team;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public abstract class TeamArgument extends MBCommand implements PaperArgumentCommand.AdventureFormat<TeamValue> {
+public abstract class TeamArgument extends MBCommand implements PaperArgumentCommand.AdventureFormat<Team> {
 
     @Override
     public String name() {
@@ -16,7 +16,7 @@ public abstract class TeamArgument extends MBCommand implements PaperArgumentCom
     }
 
     @Override
-    public ArgumentType<TeamValue> type() {
+    public ArgumentType<Team> type() {
         return new TeamArgumentType();
     }
 }

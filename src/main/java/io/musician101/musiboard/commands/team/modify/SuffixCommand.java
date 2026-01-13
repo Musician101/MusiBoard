@@ -4,13 +4,13 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.MBCommand;
-import io.musician101.musiboard.commands.arguments.ComponentArgumentType;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import org.bukkit.scoreboard.Team;
@@ -31,7 +31,7 @@ public class SuffixCommand extends MBCommand implements PaperLiteralCommand.Adve
             @Override
             public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
                 Team team = TeamArgumentType.get(context);
-                team.suffix(ComponentArgumentType.get(context, name()));
+                team.suffix(context.getArgument(name(), Component.class));
                 sendMessage(context, text("Prefix updated successfully.", GREEN));
                 return 1;
             }
@@ -43,7 +43,7 @@ public class SuffixCommand extends MBCommand implements PaperLiteralCommand.Adve
 
             @Override
             public ArgumentType<Component> type() {
-                return new ComponentArgumentType();
+                return ArgumentTypes.component();
             }
         });
     }

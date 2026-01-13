@@ -43,7 +43,7 @@ public class NumberFormatCommand extends MBCommand implements PaperLiteralComman
 
     @Override
     public boolean canUse(CommandSourceStack source) {
-        return canEdit(source.getSender()) && getPlugin().isPaperInstalled();
+        return canEdit(source) && getPlugin().isPaperInstalled();
     }
 
     @Override
