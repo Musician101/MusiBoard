@@ -9,7 +9,6 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
-import io.musician101.musicommand.core.command.CommandException;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
 import org.bukkit.entity.Player;
@@ -23,7 +22,7 @@ import static io.musician101.musiboard.MusiBoard.getScoreboard;
 @NullMarked
 public class TeamArgumentType implements CustomArgumentType<Team, String> {
 
-    public static Team get(CommandContext<CommandSourceStack> context) throws CommandException {
+    public static Team get(CommandContext<CommandSourceStack> context) {
         return context.getArgument("team", Team.class);
     }
 

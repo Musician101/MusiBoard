@@ -9,6 +9,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
 import org.jspecify.annotations.NullMarked;
 
@@ -19,6 +20,10 @@ import static io.musician101.musiboard.MusiBoard.getScoreboard;
 
 @NullMarked
 public class MusiScoreboardArgumentType implements CustomArgumentType<MusiScoreboard, String> {
+
+    public static MusiScoreboard get(CommandContext<CommandSourceStack> context, String name) {
+        return context.getArgument(name, MusiScoreboard.class);
+    }
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {

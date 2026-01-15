@@ -8,7 +8,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import io.musician101.musicommand.core.command.CommandException;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
 import org.bukkit.entity.Player;
@@ -22,7 +21,7 @@ import static io.musician101.musiboard.MusiBoard.getScoreboard;
 @NullMarked
 public class ObjectiveArgumentType implements CustomArgumentType<Objective, String> {
 
-    public static Objective get(CommandContext<CommandSourceStack> context, String name) throws CommandException {
+    public static Objective get(CommandContext<CommandSourceStack> context, String name) {
         return context.getArgument(name, Objective.class);
     }
 

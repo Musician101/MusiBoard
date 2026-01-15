@@ -1,10 +1,8 @@
 package io.musician101.musiboard.commands.team;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
-import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -20,16 +18,12 @@ public class RemoveCommand extends MBCommand implements PaperLiteralCommand.Adve
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new TeamArgument() {
-
-            @Override
-            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
-                Player player = getPlayer(context);
-                TeamArgumentType.get(context).unregister();
-                sendMessage(player, "<green><mb-prefix>Team deleted.");
-                return 1;
-            }
-        });
+        return List.of(TeamArgument.withExecutor(context -> {
+            Player player = getPlayer(context);
+            TeamArgumentType.get(context).unregister();
+            sendMessage(player, "<green><mb-prefix>Team deleted.");
+            return 1;
+        }));
     }
 
     @Override

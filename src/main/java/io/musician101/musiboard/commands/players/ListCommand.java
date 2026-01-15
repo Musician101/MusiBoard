@@ -4,6 +4,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.commands.MBCommand;
+import io.musician101.musiboard.commands.arguments.EntitiesArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
@@ -13,6 +14,7 @@ import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Score;
 import org.jspecify.annotations.NullMarked;
@@ -20,6 +22,7 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 import java.util.Set;
 
+import static io.musician101.musiboard.MusiBoard.getScoreboard;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GRAY;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
@@ -29,32 +32,29 @@ public class ListCommand extends MBCommand implements PaperLiteralCommand.Advent
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new TargetArgument() {
+        return List.of(TargetArgument.withExecutor(context -> EntitiesArgumentType.getTarget(context, "targets").map(entity -> {
+            handleTargets(context, entity);
+            return 1;
+        }).orElseGet(() -> {
+            sendMessage(context, "<red><mb-prefix>Provided target has no scores to show.");
+            return 1;
+        })));
+    }
 
-            @Override
-            public Integer execute(CommandContext<CommandSourceStack> context) {
-                Player player = getPlayer(context);
-                MusiScoreboard scoreboard = getScoreboard(player);
-                return getTarget(context).map(entity -> {
-                    Set<Score> scores = scoreboard.getScores(entity.getName());
-                    if (scores.isEmpty()) {
-                        sendMessage(player, "<green><mb-prefix> " + entity.getName() + " has no scores to show.");
-                    }
-                    else {
-                        sendMessage(player, "<green><prefix> " + entity.getName() + " has " + scores.size() + " score(s): ");
-                        scores.forEach(score -> {
-                            String message = "<objective: " + score.getScore();
-                            sendMessage(player, message, Messages.objectiveResolver(score.getObjective()));
-                        });
-                    }
-
-                    return 1;
-                }).orElseGet(() -> {
-                    sendMessage(player, "<red><mb-prefix>Provided target has no scores to show.");
-                    return 1;
-                });
-            }
-        });
+    private void handleTargets(CommandContext<CommandSourceStack> context, Entity entity) {
+        Player player = getPlayer(context);
+        MusiScoreboard scoreboard = getScoreboard(player);
+        Set<Score> scores = scoreboard.getScores(entity.getName());
+        if (scores.isEmpty()) {
+            sendMessage(player, "<green><mb-prefix> " + entity.getName() + " has no scores to show.");
+        }
+        else {
+            sendMessage(player, "<green><prefix> " + entity.getName() + " has " + scores.size() + " score(s): ");
+            scores.forEach(score -> {
+                String message = "<objective>: " + score.getScore();
+                sendMessage(player, message, Messages.objectiveResolver(score.getObjective()));
+            });
+        }
     }
 
     @Override

@@ -23,30 +23,32 @@ public class SuffixCommand extends MBCommand implements PaperLiteralCommand.Adve
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new PaperArgumentCommand.AdventureFormat<Component>() {
-
-            @Override
-            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
-                Team team = TeamArgumentType.get(context);
-                team.suffix(context.getArgument(name(), Component.class));
-                sendMessage(context, "<green><mb-prefix>Suffix updated successfully.");
-                return 1;
-            }
-
-            @Override
-            public String name() {
-                return "suffix";
-            }
-
-            @Override
-            public ArgumentType<Component> type() {
-                return ArgumentTypes.component();
-            }
-        });
+        return List.of(new SuffixArgument());
     }
 
     @Override
     public String name() {
         return "suffix";
+    }
+
+    private class SuffixArgument implements PaperArgumentCommand.AdventureFormat<Component> {
+
+        @Override
+        public Integer execute(CommandContext<CommandSourceStack> context) {
+            Team team = TeamArgumentType.get(context);
+            team.suffix(context.getArgument(name(), Component.class));
+            sendMessage(context, "<green><mb-prefix>Suffix updated successfully.");
+            return 1;
+        }
+
+        @Override
+        public String name() {
+            return "suffix";
+        }
+
+        @Override
+        public ArgumentType<Component> type() {
+            return ArgumentTypes.component();
+        }
     }
 }

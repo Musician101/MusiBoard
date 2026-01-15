@@ -7,8 +7,8 @@ import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
+import io.musician101.musiboard.commands.arguments.EntitiesArgumentType;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
-import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
@@ -28,47 +28,7 @@ public class RemoveCommand extends MBCommand implements PaperLiteralCommand.Adve
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new TargetArgument() {
-
-            @Override
-            public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-                return List.of(new ObjectiveArgument() {
-
-                    @Override
-                    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-                        return List.of(new PaperArgumentCommand.AdventureFormat<Integer>() {
-
-                            @Override
-                            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
-                                List<Entity> entities = getTargets(context);
-                                Player player = getPlayer(context);
-                                Objective objective = ObjectiveArgumentType.get(context, name());
-                                int s = IntegerArgumentType.getInteger(context, name());
-                                entities.forEach(entity -> {
-                                    Score score = objective.getScoreFor(entity);
-                                    score.setScore(score.getScore() - s);
-                                });
-
-                                int size = entities.size();
-                                String message = "<green><mb-prefix>Removed " + s + " from <objective><green> for " + size + " entit" + (size == 1 ? "y" : "ies") + ".";
-                                sendMessage(player, message, Messages.objectiveResolver(objective));
-                                return 1;
-                            }
-
-                            @Override
-                            public String name() {
-                                return "score";
-                            }
-
-                            @Override
-                            public ArgumentType<Integer> type() {
-                                return IntegerArgumentType.integer(0, Integer.MAX_VALUE);
-                            }
-                        });
-                    }
-                });
-            }
-        });
+        return List.of(TargetArgument.withChild(ObjectiveArgument.withChild(new ScoreArgument())));
     }
 
     @Override
@@ -84,5 +44,35 @@ public class RemoveCommand extends MBCommand implements PaperLiteralCommand.Adve
     @Override
     public ComponentLike usage(CommandSourceStack source) {
         return Component.text("/players remove <targets> <objective> <score>");
+    }
+
+    private class ScoreArgument implements PaperArgumentCommand.AdventureFormat<Integer> {
+
+        @Override
+        public Integer execute(CommandContext<CommandSourceStack> context) {
+            List<Entity> entities = EntitiesArgumentType.getTargets(context, "targets");
+            Player player = getPlayer(context);
+            Objective objective = ObjectiveArgumentType.get(context, name());
+            int s = IntegerArgumentType.getInteger(context, name());
+            entities.forEach(entity -> {
+                Score score = objective.getScoreFor(entity);
+                score.setScore(score.getScore() - s);
+            });
+
+            int size = entities.size();
+            String message = "<green><mb-prefix>Removed " + s + " from <objective><green> for " + size + " entit" + (size == 1 ? "y" : "ies") + ".";
+            sendMessage(player, message, Messages.objectiveResolver(objective));
+            return 1;
+        }
+
+        @Override
+        public String name() {
+            return "score";
+        }
+
+        @Override
+        public ArgumentType<Integer> type() {
+            return IntegerArgumentType.integer(0, Integer.MAX_VALUE);
+        }
     }
 }

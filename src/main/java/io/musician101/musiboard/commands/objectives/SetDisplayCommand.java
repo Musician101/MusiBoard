@@ -7,7 +7,6 @@ import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
-import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
@@ -15,6 +14,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -23,44 +23,14 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
+import static io.musician101.musiboard.MusiBoard.getScoreboard;
+
 @NullMarked
 class SetDisplayCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new PaperArgumentCommand.AdventureFormat<DisplaySlot>() {
-
-            @Override
-            public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-                return List.of(new ObjectiveArgument() {
-
-                    @Override
-                    public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
-                        Player player = getPlayer(context);
-                        DisplaySlot displaySlot = context.getArgument("slot", DisplaySlot.class);
-                        Objective objective = ObjectiveArgumentType.get(context, name());
-                        setDisplaySlot(player, displaySlot, objective);
-                        return 1;
-                    }
-                });
-            }
-
-            @Override
-            public Integer execute(CommandContext<CommandSourceStack> context) {
-                setDisplaySlot(getPlayer(context), context.getArgument(name(), DisplaySlot.class), null);
-                return 1;
-            }
-
-            @Override
-            public String name() {
-                return "slot";
-            }
-
-            @Override
-            public ArgumentType<DisplaySlot> type() {
-                return ArgumentTypes.scoreboardDisplaySlot();
-            }
-        });
+        return List.of(new DisplaySlotArgument());
     }
 
     @Override
@@ -73,22 +43,52 @@ class SetDisplayCommand extends MBCommand implements PaperLiteralCommand.Adventu
         return "setDisplay";
     }
 
-    private void setDisplaySlot(Player player, DisplaySlot slot, @Nullable Objective objective) {
+    private static void setDisplaySlot(Player player, DisplaySlot slot, @Nullable Objective objective) {
         MusiScoreboard scoreboard = getScoreboard(player);
         if (objective == null) {
             // The way this is handled by Paper results in non-vanilla like behavior
             // Objectives can only be in one display slot and clearing one display slot will clear all of them, if they're the same objective
             scoreboard.clearSlot(slot);
-            sendMessage(player, "<green><mb-prefix>Display slot cleared.");
+            player.sendMessage(MiniMessage.miniMessage().deserialize("<green><mb-prefix>Display slot cleared."));
             return;
         }
 
         objective.setDisplaySlot(slot);
-        sendMessage(player, "<green><mb-prefix>Display slot set.");
+        player.sendMessage(MiniMessage.miniMessage().deserialize("<green><mb-prefix>Display slot set."));
     }
 
     @Override
     public ComponentLike usage(CommandSourceStack source) {
         return Component.text("/objectives setDisplay <slot> [<objective>]");
+    }
+
+    private static class DisplaySlotArgument extends MBCommand implements PaperArgumentCommand.AdventureFormat<DisplaySlot> {
+
+        @Override
+        public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
+            return List.of(ObjectiveArgument.withExecutor(context -> {
+                Player player = getPlayer(context);
+                DisplaySlot displaySlot = context.getArgument("slot", DisplaySlot.class);
+                Objective objective = ObjectiveArgumentType.get(context, name());
+                setDisplaySlot(player, displaySlot, objective);
+                return 1;
+            }));
+        }
+
+        @Override
+        public Integer execute(CommandContext<CommandSourceStack> context) {
+            setDisplaySlot(getPlayer(context), context.getArgument(name(), DisplaySlot.class), null);
+            return 1;
+        }
+
+        @Override
+        public String name() {
+            return "slot";
+        }
+
+        @Override
+        public ArgumentType<DisplaySlot> type() {
+            return ArgumentTypes.scoreboardDisplaySlot();
+        }
     }
 }

@@ -5,7 +5,6 @@ import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.arguments.TeamArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
-import io.musician101.musicommand.core.command.CommandException;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -21,6 +20,7 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 import java.util.Set;
 
+import static io.musician101.musiboard.MusiBoard.getScoreboard;
 import static net.kyori.adventure.text.Component.join;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.format.NamedTextColor.GRAY;
@@ -31,21 +31,17 @@ public class ListCommand extends MBCommand implements PaperLiteralCommand.Advent
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new TeamArgument() {
-
-            @Override
-            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
-                Team team = TeamArgumentType.get(context);
-                Player player = getPlayer(context);
-                Set<String> entries = team.getEntries();
-                int size = entries.size();
-                Component entriesComponent = join(JoinConfiguration.separator(text(", ", GRAY)), entries.stream().map(e -> text(e, GREEN)).toList());
-                TagResolver resolver = TagResolver.resolver("entries", Tag.selfClosingInserting(entriesComponent));
-                String message = "<green><mb-prefix> <team><green> has " + size + " member(s)" + (size > 0 ? ": <entries>" : "");
-                sendMessage(player, message, resolver);
-                return 1;
-            }
-        });
+        return List.of(TeamArgument.withExecutor(context -> {
+            Team team = TeamArgumentType.get(context);
+            Player player = getPlayer(context);
+            Set<String> entries = team.getEntries();
+            int size = entries.size();
+            Component entriesComponent = join(JoinConfiguration.separator(text(", ", GRAY)), entries.stream().map(e -> text(e, GREEN)).toList());
+            TagResolver resolver = TagResolver.resolver("entries", Tag.selfClosingInserting(entriesComponent));
+            String message = "<green><mb-prefix> <team><green> has " + size + " member(s)" + (size > 0 ? ": <entries>" : "");
+            sendMessage(player, message, resolver);
+            return 1;
+        }));
     }
 
     @Override

@@ -17,13 +17,7 @@ public class ModifyCommand extends MBCommand implements PaperLiteralCommand.Adve
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new TeamArgument() {
-
-            @Override
-            public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-                return List.of(new CollisionRuleCommand(), new ColorCommand(), new DeathMessageVisibilityCommand(), new DisplayNameCommand(), new FriendlyFireCommand(), new NameTagVisibilityCommand(), new PrefixCommand(), new SeeFriendlyInvisiblesCommand(), new SuffixCommand());
-            }
-        });
+        return List.of(TeamArgument.withChildren(new CollisionRuleCommand(), new ColorCommand(), new DeathMessageVisibilityCommand(), new DisplayNameCommand(), new FriendlyFireCommand(), new NameTagVisibilityCommand(), new PrefixCommand(), new SeeFriendlyInvisiblesCommand(), new SuffixCommand()));
     }
 
     @Override

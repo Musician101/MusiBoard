@@ -23,33 +23,7 @@ class CreateCommand extends MBCommand implements PaperLiteralCommand.AdventureFo
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new PaperArgumentCommand.AdventureFormat<String>() {
-
-            @Override
-            public Integer execute(CommandContext<CommandSourceStack> context) {
-                String name = StringArgumentType.getString(context, name());
-                boolean success = getManager().registerNewScoreboard(name);
-                CommandSender sender = context.getSource().getSender();
-                if (success) {
-                    sendMessage(sender, "<green><mb-prefix> " + name + " created successfully.");
-                }
-                else {
-                    sendMessage(sender, "<red><mb-prefix> " + name + " already exists.");
-                }
-
-                return 1;
-            }
-
-            @Override
-            public String name() {
-                return "name";
-            }
-
-            @Override
-            public ArgumentType<String> type() {
-                return StringArgumentType.word();
-            }
-        });
+        return List.of(new NameArgument());
     }
 
     @Override
@@ -69,6 +43,34 @@ class CreateCommand extends MBCommand implements PaperLiteralCommand.AdventureFo
 
     @Override
     public ComponentLike usage(CommandSourceStack source) {
-        return Component.text("/sb create <name>");
+        return Component.text("/scoreboard create <name>");
+    }
+
+    private class NameArgument implements PaperArgumentCommand.AdventureFormat<String> {
+
+        @Override
+        public Integer execute(CommandContext<CommandSourceStack> context) {
+            String name = StringArgumentType.getString(context, name());
+            boolean success = getManager().registerNewScoreboard(name);
+            CommandSender sender = context.getSource().getSender();
+            if (success) {
+                sendMessage(sender, "<green><mb-prefix> " + name + " created successfully.");
+            }
+            else {
+                sendMessage(sender, "<red><mb-prefix> " + name + " already exists.");
+            }
+
+            return 1;
+        }
+
+        @Override
+        public String name() {
+            return "name";
+        }
+
+        @Override
+        public ArgumentType<String> type() {
+            return StringArgumentType.word();
+        }
     }
 }

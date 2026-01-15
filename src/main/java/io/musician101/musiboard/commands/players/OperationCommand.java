@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.Messages;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.ObjectiveArgument;
+import io.musician101.musiboard.commands.arguments.EntitiesArgumentType;
 import io.musician101.musiboard.commands.arguments.ObjectiveArgumentType;
 import io.musician101.musiboard.commands.arguments.OperationArgumentType;
 import io.musician101.musiboard.commands.arguments.OperationArgumentType.Operation;
@@ -28,77 +29,13 @@ public class OperationCommand extends MBCommand implements PaperLiteralCommand.A
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new TargetArgument() {
+        return List.of(new OperationTargetArgument("targets", new OperationObjectiveArgument("targetObjective") {
 
             @Override
             public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-                return List.of(new ObjectiveArgument() {
-
-                    @Override
-                    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-                        return List.of(new PaperArgumentCommand.AdventureFormat<Operation>() {
-
-                            @Override
-                            public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-                                return List.of(new TargetArgument() {
-
-                                    @Override
-                                    public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-                                        return List.of(new ObjectiveArgument() {
-
-                                            @Override
-                                            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
-                                                Objective targetObjective = ObjectiveArgumentType.get(context, "targetObjective");
-                                                Objective sourceObjective = ObjectiveArgumentType.get(context, "sourceObjective");
-                                                List<Entity> targets = getTargets(context, "targets");
-                                                List<Entity> sources = getTargets(context, "sources");
-                                                Operation operation = OperationArgumentType.get(context, "operation");
-                                                for (Entity target : targets) {
-                                                    Score a = targetObjective.getScoreFor(target);
-                                                    for (Entity source : sources) {
-                                                        Score b = sourceObjective.getScoreFor(source);
-                                                        operation.apply(a, b);
-                                                    }
-                                                }
-
-                                                int size = targets.size();
-                                                sendMessage(context, "<green><mb-prefix>Updated <objective> <green>for " + size + " entit" + (size == 1 ? "y" : "ies") + ".", Messages.objectiveResolver(targetObjective));
-                                                return 1;
-                                            }
-
-                                            @Override
-                                            public String name() {
-                                                return "sourceObjective";
-                                            }
-                                        });
-                                    }
-
-                                    @Override
-                                    public String name() {
-                                        return "sources";
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public String name() {
-                                return "operation";
-                            }
-
-                            @Override
-                            public ArgumentType<Operation> type() {
-                                return new OperationArgumentType();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public String name() {
-                        return "targetObjective";
-                    }
-                });
+                return List.of(new OperationArgument());
             }
-        });
+        }));
     }
 
     @Override
@@ -114,5 +51,81 @@ public class OperationCommand extends MBCommand implements PaperLiteralCommand.A
     @Override
     public ComponentLike usage(CommandSourceStack source) {
         return Component.text("/scoreboard players operation <targets> <targetObjective> <operation> <source> <sourceObjective>");
+    }
+
+    private static class OperationTargetArgument extends TargetArgument {
+
+        private final String name;
+
+        private final PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike> child;
+        public OperationTargetArgument(String name, PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike> child) {
+            this.name = name;
+            this.child = child;
+        }
+
+        @Override
+        public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
+            return List.of(child);
+        }
+
+        @Override
+        public String name() {
+            return name;
+        }
+
+    }
+
+    private static class OperationArgument implements PaperArgumentCommand.AdventureFormat<Operation> {
+
+        @Override
+        public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
+            return List.of(new OperationTargetArgument("sources", new OperationObjectiveArgument("sourceObjective") {
+
+                @Override
+                public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
+                    Objective targetObjective = ObjectiveArgumentType.get(context, "targetObjective");
+                    Objective sourceObjective = ObjectiveArgumentType.get(context, "sourceObjective");
+                    List<Entity> targets = EntitiesArgumentType.getTargets(context, "targets");
+                    List<Entity> sources = EntitiesArgumentType.getTargets(context, "sources");
+                    Operation operation = OperationArgumentType.get(context, "operation");
+                    for (Entity target : targets) {
+                        Score a = targetObjective.getScoreFor(target);
+                        for (Entity source : sources) {
+                            Score b = sourceObjective.getScoreFor(source);
+                            operation.apply(a, b);
+                        }
+                    }
+
+                    int size = targets.size();
+                    sendMessage(context, "<green><mb-prefix>Updated <objective> <green>for " + size + " entit" + (size == 1 ? "y" : "ies") + ".", Messages.objectiveResolver(targetObjective));
+                    return 1;
+                }
+            }));
+        }
+
+        @Override
+        public String name() {
+            return "operation";
+        }
+
+        @Override
+        public ArgumentType<Operation> type() {
+            return new OperationArgumentType();
+        }
+
+    }
+
+    private static class OperationObjectiveArgument extends ObjectiveArgument {
+
+        private final String name;
+
+        public OperationObjectiveArgument(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String name() {
+            return name;
+        }
     }
 }

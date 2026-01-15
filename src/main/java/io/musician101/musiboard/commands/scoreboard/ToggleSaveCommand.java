@@ -10,6 +10,7 @@ import io.musician101.musicommand.paper.command.PaperLiteralCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
@@ -28,7 +29,7 @@ public class ToggleSaveCommand extends MBCommand implements PaperLiteralCommand.
                 MusiScoreboard scoreboard = getScoreboard(context);
                 boolean save = !scoreboard.saveData();
                 scoreboard.saveData(save);
-                sendMessage(player, "<green><prefix> Scoreboard save " + (save ? "en" : "dis") + "abled.");
+                sendMessage(player, "<green><prefix> Scoreboard save <save-enabled:enabled:disabled>.", Formatter.booleanChoice("save-enabled", save));
                 return 1;
             }
         });

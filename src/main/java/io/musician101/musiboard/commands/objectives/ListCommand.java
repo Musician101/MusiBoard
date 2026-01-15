@@ -14,6 +14,8 @@ import org.jspecify.annotations.NullMarked;
 
 import java.util.Set;
 
+import static io.musician101.musiboard.MusiBoard.getScoreboard;
+
 @NullMarked
 class ListCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 

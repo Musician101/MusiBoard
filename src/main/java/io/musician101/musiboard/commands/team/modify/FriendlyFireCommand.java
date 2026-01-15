@@ -22,30 +22,32 @@ public class FriendlyFireCommand extends MBCommand implements PaperLiteralComman
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new PaperArgumentCommand.AdventureFormat<Boolean>() {
-
-            @Override
-            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
-                Team team = TeamArgumentType.get(context);
-                team.setAllowFriendlyFire(BoolArgumentType.getBool(context, name()));
-                sendMessage(context, "<green><mb-prefix>Allow friendly fire updated.");
-                return 1;
-            }
-
-            @Override
-            public String name() {
-                return "friendlyFire";
-            }
-
-            @Override
-            public ArgumentType<Boolean> type() {
-                return BoolArgumentType.bool();
-            }
-        });
+        return List.of(new FriendlyFireArgument());
     }
 
     @Override
     public String name() {
         return "friendlyFire";
+    }
+
+    private class FriendlyFireArgument implements PaperArgumentCommand.AdventureFormat<Boolean> {
+
+        @Override
+        public Integer execute(CommandContext<CommandSourceStack> context) {
+            Team team = TeamArgumentType.get(context);
+            team.setAllowFriendlyFire(BoolArgumentType.getBool(context, name()));
+            sendMessage(context, "<green><mb-prefix>Allow friendly fire updated.");
+            return 1;
+        }
+
+        @Override
+        public String name() {
+            return "friendlyFire";
+        }
+
+        @Override
+        public ArgumentType<Boolean> type() {
+            return BoolArgumentType.bool();
+        }
     }
 }

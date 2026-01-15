@@ -22,30 +22,32 @@ public class SeeFriendlyInvisiblesCommand extends MBCommand implements PaperLite
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new PaperArgumentCommand.AdventureFormat<Boolean>() {
-
-            @Override
-            public Integer execute(CommandContext<CommandSourceStack> context) throws CommandException {
-                Team team = TeamArgumentType.get(context);
-                team.setCanSeeFriendlyInvisibles(BoolArgumentType.getBool(context, name()));
-                sendMessage(context, "<green><mb-prefix> Setting updated successfully.");
-                return 1;
-            }
-
-            @Override
-            public String name() {
-                return "seeFriendlyInvisibles";
-            }
-
-            @Override
-            public ArgumentType<Boolean> type() {
-                return BoolArgumentType.bool();
-            }
-        });
+        return List.of(new SeeFriendlyInvisiblesArgument());
     }
 
     @Override
     public String name() {
         return "seeFriendlyInvisibles";
+    }
+
+    private class SeeFriendlyInvisiblesArgument implements PaperArgumentCommand.AdventureFormat<Boolean> {
+
+        @Override
+        public Integer execute(CommandContext<CommandSourceStack> context) {
+            Team team = TeamArgumentType.get(context);
+            team.setCanSeeFriendlyInvisibles(BoolArgumentType.getBool(context, name()));
+            sendMessage(context, "<green><mb-prefix> Setting updated successfully.");
+            return 1;
+        }
+
+        @Override
+        public String name() {
+            return "seeFriendlyInvisibles";
+        }
+
+        @Override
+        public ArgumentType<Boolean> type() {
+            return BoolArgumentType.bool();
+        }
     }
 }

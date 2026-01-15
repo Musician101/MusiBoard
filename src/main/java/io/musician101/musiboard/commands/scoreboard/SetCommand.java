@@ -1,9 +1,9 @@
 package io.musician101.musiboard.commands.scoreboard;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
-import com.mojang.brigadier.context.CommandContext;
 import io.musician101.musiboard.commands.MBCommand;
 import io.musician101.musiboard.commands.MusiScoreboardArgument;
+import io.musician101.musiboard.commands.arguments.MusiScoreboardArgumentType;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musicommand.paper.command.PaperCommand;
 import io.musician101.musicommand.paper.command.PaperLiteralCommand;
@@ -22,17 +22,13 @@ class SetCommand extends MBCommand implements PaperLiteralCommand.AdventureForma
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new MusiScoreboardArgument() {
-
-            @Override
-            public Integer execute(CommandContext<CommandSourceStack> context) {
-                MusiScoreboard scoreboard = getScoreboard(context);
-                Player player = getPlayer(context);
-                getManager().setScoreboard(player, scoreboard);
-                sendMessage(player, "<green><mb-prefix>Scoreboard set successfully.");
-                return 1;
-            }
-        });
+        return List.of(MusiScoreboardArgument.withExecutor(context -> {
+            MusiScoreboard scoreboard = MusiScoreboardArgumentType.get(context, "scoreboard");
+            Player player = getPlayer(context);
+            getManager().setScoreboard(player, scoreboard);
+            sendMessage(player, "<green><mb-prefix>Scoreboard set successfully.");
+            return 1;
+        }));
     }
 
     @Override
@@ -52,6 +48,6 @@ class SetCommand extends MBCommand implements PaperLiteralCommand.AdventureForma
 
     @Override
     public ComponentLike usage(CommandSourceStack source) {
-        return Component.text("/sb set <name>");
+        return Component.text("/scoreboard set <name>");
     }
 }

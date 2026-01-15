@@ -8,8 +8,20 @@ import io.musician101.musicommand.paper.command.PaperArgumentCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.jspecify.annotations.NullMarked;
 
+import java.util.function.Function;
+
 @NullMarked
 public abstract class MusiScoreboardArgument extends MBCommand implements PaperArgumentCommand.AdventureFormat<MusiScoreboard> {
+
+    public static MusiScoreboardArgument withExecutor(Function<CommandContext<CommandSourceStack>, Integer> executor) {
+        return new MusiScoreboardArgument() {
+
+            @Override
+            public Integer execute(CommandContext<CommandSourceStack> context) {
+                return executor.apply(context);
+            }
+        };
+    }
 
     public MusiScoreboard getScoreboard(CommandContext<CommandSourceStack> context) {
         return context.getArgument(name(), MusiScoreboard.class);
@@ -17,7 +29,7 @@ public abstract class MusiScoreboardArgument extends MBCommand implements PaperA
 
     @Override
     public String name() {
-        return "name";
+        return "scoreboard";
     }
 
     @Override
