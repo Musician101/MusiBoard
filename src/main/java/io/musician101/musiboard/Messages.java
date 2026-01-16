@@ -7,12 +7,9 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Team;
 import org.jspecify.annotations.NullMarked;
 
-import static net.kyori.adventure.text.Component.text;
-
 @NullMarked
 public interface Messages {
 
-    Component PREFIX = text("[MB] ");
     TagResolver PREFIX_RESOLVER = TagResolver.resolver("mb-prefix", Tag.selfClosingInserting(Component.text("[MB]")));
 
     static TagResolver objectiveResolver(Objective objective) {
