@@ -8,7 +8,9 @@ import io.musician101.musiboard.commands.team.TeamCommand;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musiboard.scoreboard.MusiScoreboardManager;
 import io.musician101.musicommand.paper.PaperMusiCommand;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +18,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NullMarked;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @NullMarked
@@ -55,7 +58,12 @@ public final class MusiBoard extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        manager.save();
+        try {
+            manager.save();
+        }
+        catch (IOException e) {
+            getComponentLogger().error(Component.text("An error occurred while saving scoreboards.", NamedTextColor.RED), e);
+        }
     }
 
     @Override
@@ -67,7 +75,13 @@ public final class MusiBoard extends JavaPlugin implements Listener {
         musiCommand.registerCommand(new PlayersCommand());
         musiCommand.registerCommand(new ScoreboardCommand());
         musiCommand.registerCommand(new TeamCommand());
-        manager.load();
+        try {
+            manager.load();
+        }
+        catch (IOException e) {
+            getComponentLogger().error(Component.text("An error occurred while loading scoreboards.", NamedTextColor.RED), e);
+        }
+
         getServer().getPluginManager().registerEvents(this, this);
     }
 

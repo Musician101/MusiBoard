@@ -1,17 +1,31 @@
 package io.musician101.musiboard.scoreboard;
 
-import org.bukkit.configuration.file.YamlConfiguration;
+import io.musician101.musiboard.scoreboard.serialize.DummyObjective;
+import io.musician101.musiboard.scoreboard.serialize.DummyScore;
+import io.musician101.musiboard.scoreboard.serialize.DummyTeam;
+import io.musician101.musiboard.scoreboard.serialize.MusiScoreboardSerializer;
+import io.musician101.musiboard.scoreboard.serialize.NamedTextColorSerializer;
+import io.musician101.musiboard.scoreboard.serialize.NumberFormatSerializer;
+import io.musician101.musiboard.scoreboard.serialize.OptionStatusSerializer;
+import io.musician101.musiboard.scoreboard.serialize.TextColorSerializer;
+import io.papermc.paper.scoreboard.numbers.NumberFormat;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team.OptionStatus;
 import org.jspecify.annotations.NullMarked;
+import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.serialize.TypeSerializerCollection;
+import org.spongepowered.configurate.yaml.NodeStyle;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import static io.musician101.musiboard.MusiBoard.getPlugin;
@@ -19,6 +33,16 @@ import static io.musician101.musiboard.MusiBoard.getPlugin;
 @NullMarked
 public class MusiScoreboardManager {
 
+    private static final TypeSerializerCollection SERIALIZERS = TypeSerializerCollection.defaults().childBuilder()
+            .register(MusiScoreboard.class, new MusiScoreboardSerializer())
+            .register(DummyObjective.class, new DummyObjective.Serializer())
+            .register(DummyTeam.class, new DummyTeam.Serializer())
+            .register(OptionStatus.class, new OptionStatusSerializer())
+            .register(NamedTextColor.class, new NamedTextColorSerializer())
+            .register(DummyScore.class, new DummyScore.Serializer())
+            .register(NumberFormat.class, new NumberFormatSerializer())
+            .register(TextColor.class, new TextColorSerializer())
+            .build();
     private final List<MusiScoreboard> scoreboards = new ArrayList<>();
     // This is initialized when load() is called.
     @SuppressWarnings("NotNullFieldNotInitialized")
@@ -71,8 +95,8 @@ public class MusiScoreboardManager {
         return vanillaScoreboard;
     }
 
-    public void load() {
-        Logger logger = getPlugin().getLogger();
+    public void load() throws IOException {
+        IOException exception = new IOException("One or more errors occurred while loading scoreboards.");
         vanillaScoreboard = new VanillaScoreboard();
         Path dir = getPlugin().getDataFolder().toPath().resolve("scoreboards");
         if (Files.notExists(dir)) {
@@ -80,19 +104,33 @@ public class MusiScoreboardManager {
                 Files.createDirectories(dir);
             }
             catch (IOException e) {
-                logger.log(Level.SEVERE, "An error occurred while trying to load scoreboards.", e);
-                return;
+                exception.addSuppressed(exception);
             }
         }
 
         try (Stream<Path> stream = Files.list(dir)) {
-            stream.forEach(path -> scoreboards.add(new MusiScoreboard(YamlConfiguration.loadConfiguration(path.toFile()))));
+            stream.filter(path -> !Files.isDirectory(path)).filter(path -> path.toString().endsWith(".yml")).map(path -> {
+                YamlConfigurationLoader loader = YamlConfigurationLoader.builder().nodeStyle(NodeStyle.BLOCK).file(path.toFile()).defaultOptions(c -> c.serializers(SERIALIZERS)).build();
+                try {
+                    ConfigurationNode node = loader.load();
+                    MusiScoreboard scoreboard = node.require(MusiScoreboard.class);
+                    scoreboards.add(scoreboard);
+                    return null;
+                }
+                catch (IOException e) {
+                    return e;
+                }
+            }).filter(Objects::nonNull).forEach(exception::addSuppressed);
         }
         catch (IOException e) {
-            logger.log(Level.SEVERE, "An error occurred while trying to load scoreboards.", e);
+            exception.addSuppressed(e);
         }
 
-        logger.info(scoreboards.size() + " scoreboard(s) loaded.");
+        if (exception.getSuppressed().length > 0) {
+            throw exception;
+        }
+
+        getPlugin().getLogger().info(scoreboards.size() + " scoreboard(s) loaded.");
     }
 
     public boolean registerNewScoreboard(String name) {
@@ -109,8 +147,34 @@ public class MusiScoreboardManager {
         return scoreboards.add(b);
     }
 
-    public void save() {
-        scoreboards.stream().filter(MusiScoreboard::saveData).forEach(MusiScoreboard::save);
+    public void save() throws IOException {
+        IOException exception = new IOException("One or more errors occurred while loading scoreboards.");
+        Path dir = getPlugin().getDataFolder().toPath().resolve("scoreboards");
+        if (Files.notExists(dir)) {
+            try {
+                Files.createDirectories(dir);
+            }
+            catch (IOException e) {
+                exception.addSuppressed(exception);
+            }
+        }
+
+        scoreboards.stream().map(scoreboard -> {
+            try {
+                YamlConfigurationLoader loader = YamlConfigurationLoader.builder().nodeStyle(NodeStyle.BLOCK).file(dir.resolve(scoreboard.getName() + ".yml").toFile()).defaultOptions(c -> c.serializers(SERIALIZERS)).build();
+                ConfigurationNode node = loader.createNode(n -> n.set(scoreboard));
+                loader.save(node);
+                return null;
+            }
+            catch (IOException e) {
+                return e;
+            }
+        }).filter(Objects::nonNull).forEach(exception::addSuppressed);
+
+        if (exception.getSuppressed().length > 0) {
+            throw exception;
+        }
+
         getPlugin().getLogger().info(scoreboards.size() + " scoreboard(s) saved.");
     }
 
