@@ -159,7 +159,7 @@ public class MusiScoreboardManager {
             }
         }
 
-        scoreboards.stream().map(scoreboard -> {
+        scoreboards.stream().filter(MusiScoreboard::saveData).map(scoreboard -> {
             try {
                 YamlConfigurationLoader loader = YamlConfigurationLoader.builder().nodeStyle(NodeStyle.BLOCK).file(dir.resolve(scoreboard.getName() + ".yml").toFile()).defaultOptions(c -> c.serializers(SERIALIZERS)).build();
                 ConfigurationNode node = loader.createNode(n -> n.set(scoreboard));
