@@ -1,10 +1,7 @@
 package io.musician101.musiboard;
 
-import io.musician101.musiboard.commands.MBMain;
-import io.musician101.musiboard.commands.objectives.ObjectivesCommand;
-import io.musician101.musiboard.commands.players.PlayersCommand;
+import io.musician101.musiboard.commands.main.MBMain;
 import io.musician101.musiboard.commands.scoreboard.ScoreboardCommand;
-import io.musician101.musiboard.commands.team.TeamCommand;
 import io.musician101.musiboard.scoreboard.MusiScoreboard;
 import io.musician101.musiboard.scoreboard.MusiScoreboardManager;
 import io.musician101.musicommand.paper.PaperMusiCommand;
@@ -71,10 +68,7 @@ public final class MusiBoard extends JavaPlugin implements Listener {
         reload();
         PaperMusiCommand<ComponentLike> musiCommand = PaperMusiCommand.newAdventureInstance(this);
         musiCommand.registerCommand(new MBMain(), "mb");
-        musiCommand.registerCommand(new ObjectivesCommand());
-        musiCommand.registerCommand(new PlayersCommand());
         musiCommand.registerCommand(new ScoreboardCommand());
-        musiCommand.registerCommand(new TeamCommand());
         try {
             manager.load();
         }

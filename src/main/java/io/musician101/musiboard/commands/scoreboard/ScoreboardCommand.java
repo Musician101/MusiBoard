@@ -21,7 +21,7 @@ public class ScoreboardCommand extends MBCommand implements PaperLiteralCommand.
 
     @Override
     public List<PaperCommand<? extends ArgumentBuilder<CommandSourceStack, ?>, ComponentLike>> children() {
-        return List.of(new CreateCommand(), new DeleteCommand(), new SetCommand(), new SetGlobalCommand(), new ToggleSaveCommand());
+        return List.of(new EditCommand(), new SetCommand(), new SetGlobalCommand());
     }
 
     @Override

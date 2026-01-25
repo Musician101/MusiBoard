@@ -11,31 +11,31 @@ import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-class SetCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
+class EditCommand extends MBCommand implements PaperLiteralCommand.AdventureFormat {
 
     @Override
     public Integer execute(CommandContext<CommandSourceStack> context) {
-        context.getSource().getSender().showDialog(ScoreboardsDialog.selectDialog().build());
+        context.getSource().getSender().showDialog(ScoreboardsDialog.editDialog().build());
         return 1;
     }
 
     @Override
     public boolean canUse(CommandSourceStack source) {
-        return source.getSender().hasPermission("musiboard.override") && source instanceof Player;
+        return canEdit(source) && source.getSender() instanceof Player;
     }
 
     @Override
     public ComponentLike description(CommandSourceStack source) {
-        return Component.text("Set your scoreboard.");
+        return Component.text("Edit scoreboards.");
     }
 
     @Override
     public String name() {
-        return "set";
+        return "edit";
     }
 
     @Override
     public ComponentLike usage(CommandSourceStack source) {
-        return Component.text("/scoreboard set");
+        return Component.text("/scoreboard edit");
     }
 }

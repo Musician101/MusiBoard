@@ -2,6 +2,7 @@ package io.musician101.musiboard.scoreboard;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Criteria;
@@ -48,6 +49,10 @@ public class MusiScoreboard {
 
     void addPlayer(Player player) {
         player.setScoreboard(scoreboard);
+        players.add(player.getUniqueId());
+    }
+
+    void addPlayer(OfflinePlayer player) {
         players.add(player.getUniqueId());
     }
 
@@ -143,6 +148,10 @@ public class MusiScoreboard {
         return players.contains(player.getUniqueId());
     }
 
+    public boolean hasPlayer(OfflinePlayer player) {
+        return players.contains(player.getUniqueId());
+    }
+
     public boolean isObjectiveSaveDisabled(Objective objective) {
         return isObjectiveSaveDisabled(objective.getName());
     }
@@ -176,6 +185,10 @@ public class MusiScoreboard {
     }
 
     void removePlayer(Player player) {
+        players.remove(player.getUniqueId());
+    }
+
+    void removePlayer(OfflinePlayer player) {
         players.remove(player.getUniqueId());
     }
 

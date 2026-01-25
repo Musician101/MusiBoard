@@ -72,7 +72,6 @@ public final class DummyTeam {
 
     public static class Serializer implements TypeSerializer<DummyTeam> {
 
-        //TODO need serializers NamedTextColor
         @Override
         public DummyTeam deserialize(Type type, ConfigurationNode node) throws SerializationException {
             String name = node.node("Name").require(String.class);

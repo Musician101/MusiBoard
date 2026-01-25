@@ -11,6 +11,7 @@ import io.musician101.musiboard.scoreboard.serialize.TextColorSerializer;
 import io.papermc.paper.scoreboard.numbers.NumberFormat;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team.OptionStatus;
 import org.jspecify.annotations.NullMarked;
@@ -179,6 +180,11 @@ public class MusiScoreboardManager {
     }
 
     public void setScoreboard(Player player, MusiScoreboard scoreboard) {
+        scoreboards.forEach(s -> s.removePlayer(player));
+        scoreboard.addPlayer(player);
+    }
+
+    public void setScoreboard(OfflinePlayer player, MusiScoreboard scoreboard) {
         scoreboards.forEach(s -> s.removePlayer(player));
         scoreboard.addPlayer(player);
     }
