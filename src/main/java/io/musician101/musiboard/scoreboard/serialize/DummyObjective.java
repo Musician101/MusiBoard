@@ -17,7 +17,8 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 
 @NullMarked
-public record DummyObjective(String name, Component displayName, Criteria criteria, RenderType renderType, boolean displayAutoUpdate, @Nullable NumberFormat format) {
+public record DummyObjective(String name, Component displayName, Criteria criteria, RenderType renderType,
+                             boolean displayAutoUpdate, @Nullable NumberFormat format) {
 
     public static Objective fromDummy(MusiScoreboard scoreboard, DummyObjective dummy) {
         Objective objective = scoreboard.registerNewObjective(dummy.name, dummy.criteria, dummy.displayName, dummy.renderType);

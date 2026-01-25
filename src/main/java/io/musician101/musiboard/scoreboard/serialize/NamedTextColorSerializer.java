@@ -14,7 +14,7 @@ public class NamedTextColorSerializer implements TypeSerializer<NamedTextColor> 
 
     @Override
     public NamedTextColor deserialize(Type type, ConfigurationNode node) throws SerializationException {
-        NamedTextColor color =  NamedTextColor.NAMES.value(node.require(String.class));
+        NamedTextColor color = NamedTextColor.NAMES.value(node.require(String.class));
         if (color == null) {
             return NamedTextColor.WHITE;
         }

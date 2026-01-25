@@ -43,15 +43,13 @@ public class PlayersDialog extends MusiDialog {
 
     @Override
     protected DialogType type() {
-        ActionButton applyButton = applyButton((view, audience) -> {
-            players.forEach(uuid -> {
-                OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-                Boolean bool = view.getBoolean(uuid.toString());
-                if (bool != null && bool) {
-                    getManager().setScoreboard(player, scoreboard);
-                }
-            });
-        });
+        ActionButton applyButton = applyButton((view, audience) -> players.forEach(uuid -> {
+            OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+            Boolean bool = view.getBoolean(uuid.toString());
+            if (bool != null && bool) {
+                getManager().setScoreboard(player, scoreboard);
+            }
+        }));
         return DialogType.confirmation(applyButton, backButton(showMusiDialogCallback(new ScoreboardDialog(scoreboard))));
     }
 }

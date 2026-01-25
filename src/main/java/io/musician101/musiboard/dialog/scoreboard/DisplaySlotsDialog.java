@@ -30,9 +30,7 @@ public class DisplaySlotsDialog extends MusiDialog {
     @Override
     protected List<DialogInput> inputs() {
         List<DialogInput> inputs = new ArrayList<>();
-        scoreboard.getObjectives().stream().sorted(Comparator.comparing(Objective::getName)).forEach(objective -> {
-            inputs.add(singleOptionInput(objective.getName(), objective.displayName(), entries(objective)));
-        });
+        scoreboard.getObjectives().stream().sorted(Comparator.comparing(Objective::getName)).forEach(objective -> inputs.add(singleOptionInput(objective.getName(), objective.displayName(), entries(objective))));
         return inputs;
     }
 

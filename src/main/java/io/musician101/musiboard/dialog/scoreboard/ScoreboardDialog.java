@@ -47,9 +47,7 @@ public class ScoreboardDialog extends MusiDialog {
             audience.showDialog(ScoreboardsDialog.editDialog().build());
         }));
         if (!(scoreboard instanceof VanillaScoreboard)) {
-            buttons.add(actionButton(Component.text("Delete"), (view, audience) -> {
-                getManager().getScoreboards().remove(scoreboard);
-            }));
+            buttons.add(actionButton(Component.text("Delete"), (view, audience) -> getManager().getScoreboards().remove(scoreboard)));
         }
 
         ActionButton backButton = backButton((view, audience) -> audience.showDialog(ScoreboardsDialog.editDialog().build()));

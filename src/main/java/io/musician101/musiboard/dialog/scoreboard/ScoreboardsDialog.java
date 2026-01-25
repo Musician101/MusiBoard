@@ -29,7 +29,8 @@ public class ScoreboardsDialog extends MusiDialog {
     }
 
     private static ActionButton emptyBackButton() {
-        return ActionButton.builder(Component.text("Back")).action(DialogAction.customClick((view, audience) -> {}, DEFAULT_CALLBACK_OPTIONS)).build();
+        return ActionButton.builder(Component.text("Back")).action(DialogAction.customClick((view, audience) -> {
+        }, DEFAULT_CALLBACK_OPTIONS)).build();
     }
 
     public static ScoreboardsDialog editDialog() {
@@ -56,7 +57,7 @@ public class ScoreboardsDialog extends MusiDialog {
     }
 
     private static ActionButton selectScoreboardAction(MusiScoreboard scoreboard) {
-        DialogAction action =  DialogAction.customClick((view, audience) -> {
+        DialogAction action = DialogAction.customClick((view, audience) -> {
             getManager().setScoreboard((Player) audience, scoreboard);
             audience.sendMessage(MiniMessage.miniMessage().deserialize("<green><mb-prefix> " + scoreboard.getName() + " selected."));
             audience.closeDialog();
@@ -72,7 +73,7 @@ public class ScoreboardsDialog extends MusiDialog {
     }
 
     private static ActionButton selectGlobalScoreboardAction(MusiScoreboard scoreboard) {
-        DialogAction action =  DialogAction.customClick((view, audience) -> {
+        DialogAction action = DialogAction.customClick((view, audience) -> {
             Bukkit.getOnlinePlayers().forEach(p -> getManager().setScoreboard(p, scoreboard));
             audience.sendMessage(MiniMessage.miniMessage().deserialize("<green><mb-prefix> " + scoreboard.getName() + " selected."));
             audience.closeDialog();

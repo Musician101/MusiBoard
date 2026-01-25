@@ -17,9 +17,9 @@ import java.util.List;
 @NullMarked
 public class ColorDialog extends MusiDialog {
 
-    private NamedTextColor color;
     private final Team team;
     private final TeamDialog teamDialog;
+    private NamedTextColor color;
 
     public ColorDialog(NamedTextColor color, Team team, TeamDialog teamDialog) {
         super(Component.text("Select Team Color"));
