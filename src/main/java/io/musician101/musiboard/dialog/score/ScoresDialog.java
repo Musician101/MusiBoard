@@ -39,7 +39,7 @@ public class ScoresDialog extends MusiDialog {
         List<Dialog> dialogs = new ArrayList<>();
         scoreboard.getEntries().stream().sorted(String::compareTo).forEach(entry -> {
             Score score = objective.getScore(entry);
-            dialogs.add(new ScoreDialog(score, this));
+            dialogs.add(new ScoreDialog(score, this).build());
         });
         return dialogs(dialogs);
     }
